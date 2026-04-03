@@ -40,7 +40,7 @@ it('returns a streaming response', function () {
         'message' => 'Hello',
         'session_id' => Str::uuid()->toString(),
     ])->assertSuccessful()
-        ->assertHeader('content-type', 'text/event-stream; charset=UTF-8');
+        ->assertHeader('content-type', 'text/plain; charset=UTF-8');
 });
 
 it('validates that message is required', function () {

@@ -36,21 +36,33 @@ class ChatController extends Controller
 
         $stream = $agent->stream($validated['message']);
 
-        return response()->eventStream(function () use ($stream, $conversation) {
+        return response()->stream(function () use ($stream, $conversation) {
+            // Disable output buffering for real-time streaming
+            while (ob_get_level()) {
+                ob_end_flush();
+            }
+
             $fullText = '';
 
             foreach ($stream as $event) {
                 if ($event instanceof TextDelta) {
-                    $fullText .= $event->text;
+                    $fullText .= $event->delta;
 
-                    yield $event->text;
+                    echo $event->delta;
+                    flush();
                 }
             }
 
-            $conversation->messages()->create([
-                'role' => MessageRole::Assistant,
-                'content' => $fullText,
-            ]);
-        });
+            if ($fullText !== '') {
+                $conversation->messages()->create([
+                    'role' => MessageRole::Assistant,
+                    'content' => $fullText,
+                ]);
+            }
+        }, 200, [
+            'Content-Type' => 'text/plain; charset=UTF-8',
+            'Cache-Control' => 'no-cache',
+            'X-Accel-Buffering' => 'no',
+        ]);
     }
 }
