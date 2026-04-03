@@ -16,22 +16,10 @@ function generateUUID(): string {
     });
 }
 
-function getSessionId(): string {
-    const key = 'chat_session_id';
-    let sessionId = localStorage.getItem(key);
-
-    if (!sessionId) {
-        sessionId = generateUUID();
-        localStorage.setItem(key, sessionId);
-    }
-
-    return sessionId;
-}
-
 export function useChat() {
     const messages = ref<ChatMessage[]>([]);
     const error = ref<string | null>(null);
-    const sessionId = getSessionId();
+    const sessionId = generateUUID();
 
     let currentAssistantId: string | null = null;
 

@@ -7,11 +7,11 @@ const Chat = defineAsyncComponent(() => import('@/components/Chat.vue'));
 
 <template>
     <Head title="Charles Bowen" />
-    <div
-        class="flex h-screen flex-col bg-[#FDFDFC] text-[#1b1b18] dark:bg-[#0a0a0a] dark:text-[#EDEDEC]"
-    >
-        <header class="border-b border-[#e3e3e0] p-4 dark:border-[#3E3E3A]">
-            <h1 class="text-center text-lg font-medium">Charles Bowen</h1>
+    <div class="scanlines flex h-screen flex-col bg-od-bg text-od-text">
+        <!-- Terminal title bar -->
+        <header class="flex items-center gap-2 border-b border-od-border bg-od-gutter px-4 py-2.5">
+            <span class="h-2.5 w-2.5 rounded-full bg-od-green" />
+            <span class="text-sm text-od-muted-foreground">~/charles-bowen</span>
         </header>
 
         <Chat />

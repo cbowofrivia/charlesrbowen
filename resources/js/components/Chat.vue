@@ -11,7 +11,7 @@ const { messages, isStreaming, error, sendMessage } = useChat();
 
     <div
         v-if="error"
-        class="px-4 py-2 text-center text-sm text-red-600 dark:text-red-400"
+        class="px-4 py-2 text-center text-xs text-od-red"
     >
         {{ error }}
     </div>
