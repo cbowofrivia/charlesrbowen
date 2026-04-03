@@ -1,0 +1,44 @@
+<?php
+
+namespace Database\Factories;
+
+use App\Enums\MessageRole;
+use App\Models\Conversation;
+use App\Models\Message;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends Factory<Message>
+ */
+class MessageFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        return [
+            'conversation_id' => Conversation::factory(),
+            'role' => fake()->randomElement(MessageRole::cases()),
+            'content' => fake()->paragraph(),
+        ];
+    }
+
+    /**
+     * Create a user message.
+     */
+    public function fromUser(): static
+    {
+        return $this->state(['role' => MessageRole::User]);
+    }
+
+    /**
+     * Create an assistant message.
+     */
+    public function fromAssistant(): static
+    {
+        return $this->state(['role' => MessageRole::Assistant]);
+    }
+}
