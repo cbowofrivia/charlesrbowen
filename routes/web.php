@@ -5,4 +5,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'Welcome')->name('home');
 
-Route::post('/chat', ChatController::class)->name('chat');
+Route::post('/chat', ChatController::class)->middleware('throttle:chat')->name('chat');

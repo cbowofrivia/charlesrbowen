@@ -123,4 +123,16 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Chat Rate Limit
+    |--------------------------------------------------------------------------
+    |
+    | Maximum number of chat messages a visitor can send per minute, keyed
+    | by their session ID. Protects the AI API from abuse.
+    |
+    */
+
+    'chat_rate_limit' => (int) env('CHAT_RATE_LIMIT', 20),
+
 ];

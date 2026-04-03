@@ -49,6 +49,24 @@ it('validates that message is required', function () {
     ])->assertInvalid(['message']);
 });
 
+it('rate limits excessive requests per session', function () {
+    config(['app.chat_rate_limit' => 3]);
+    $sessionId = Str::uuid()->toString();
+
+    for ($i = 0; $i < 3; $i++) {
+        $this->post(route('chat'), [
+            'message' => "Message {$i}",
+            'session_id' => $sessionId,
+        ])->assertSuccessful();
+    }
+
+    $this->post(route('chat'), [
+        'message' => 'One too many',
+        'session_id' => $sessionId,
+    ])->assertTooManyRequests()
+        ->assertHeader('Retry-After');
+});
+
 it('validates that session_id is required and must be a uuid', function () {
     $this->post(route('chat'), [
         'message' => 'Hello',
