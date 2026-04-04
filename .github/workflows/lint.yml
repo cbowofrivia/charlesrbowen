@@ -37,3 +37,7 @@ jobs:
 
       - name: Lint Check
         run: npm run lint:check
+
+      # TODO: Re-enable once Vue 3.5 + vue-tsc type resolution is fixed upstream
+      # - name: Type Check
+      #   run: npm run types:check

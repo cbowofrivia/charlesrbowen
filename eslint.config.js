@@ -22,7 +22,7 @@ const paddingAroundControl = [
 ];
 
 export default defineConfigWithVueTs(
-    vue.configs['flat/essential'],
+    vue.configs['flat/recommended'],
     vueTsConfigs.recommended,
     {
         plugins: {
@@ -39,7 +39,14 @@ export default defineConfigWithVueTs(
         },
         rules: {
             'vue/multi-word-component-names': 'off',
-            '@typescript-eslint/no-explicit-any': 'off',
+            '@typescript-eslint/no-explicit-any': 'warn',
+            '@typescript-eslint/no-unused-vars': [
+                'warn',
+                {
+                    argsIgnorePattern: '^_',
+                    varsIgnorePattern: '^_',
+                },
+            ],
             '@typescript-eslint/consistent-type-imports': [
                 'error',
                 {
@@ -61,6 +68,18 @@ export default defineConfigWithVueTs(
                 'error',
                 'prefer-top-level',
             ],
+            'vue/block-order': [
+                'error',
+                { order: ['script', 'template', 'style'] },
+            ],
+            'vue/define-macros-order': [
+                'error',
+                { order: ['defineProps', 'defineEmits'] },
+            ],
+            'vue/no-v-html': 'off',
+            'vue/no-unused-refs': 'warn',
+            'vue/no-useless-v-bind': 'error',
+            'vue/prefer-true-attribute-shorthand': 'error',
         },
     },
     {

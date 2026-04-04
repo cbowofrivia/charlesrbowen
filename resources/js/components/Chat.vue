@@ -1,31 +1,28 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import ChatMessages from '@/components/ChatMessages.vue';
 import ChatInput from '@/components/ChatInput.vue';
+import ChatMessages from '@/components/ChatMessages.vue';
 import { useChat } from '@/composables/useChat';
 
 const props = defineProps<{
-    initialMessage?: string;
+  initialMessage?: string;
 }>();
 
 const { messages, isStreaming, error, sendMessage } = useChat();
 
 onMounted(() => {
-    if (props.initialMessage) {
-        sendMessage(props.initialMessage);
-    }
+  if (props.initialMessage) {
+    sendMessage(props.initialMessage);
+  }
 });
 </script>
 
 <template>
-    <ChatMessages :messages="messages" />
+  <ChatMessages :messages="messages" />
 
-    <div
-        v-if="error"
-        class="px-4 py-2 text-center text-xs text-od-red"
-    >
-        {{ error }}
-    </div>
+  <div v-if="error" class="px-4 py-2 text-center text-xs text-od-red">
+    {{ error }}
+  </div>
 
-    <ChatInput :disabled="isStreaming" @send="sendMessage" />
+  <ChatInput :disabled="isStreaming" @send="sendMessage" />
 </template>
