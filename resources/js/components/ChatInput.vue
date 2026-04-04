@@ -76,7 +76,6 @@ onMounted(() => {
   textarea.value?.focus();
 });
 
-// Refocus after streaming ends
 watch(
   () => props.disabled,
   (disabled: boolean | undefined) => {
@@ -153,7 +152,6 @@ function handleKeydown(event: KeyboardEvent) {
 
 <template>
   <div class="relative border-t border-od-border bg-od-bg-light px-4 py-3">
-    <!-- Command palette -->
     <div
       v-if="showCommands"
       class="absolute right-0 bottom-full left-0 border-t border-od-border bg-od-gutter p-1"

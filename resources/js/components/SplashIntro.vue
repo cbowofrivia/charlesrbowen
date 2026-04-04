@@ -58,7 +58,6 @@ onUnmounted(() => {
       done ? 'pointer-events-none -translate-y-4 opacity-0' : 'opacity-100'
     "
   >
-    <!-- Avatar -->
     <Avatar
       class="mb-5 size-14"
       :style="{
@@ -73,7 +72,6 @@ onUnmounted(() => {
       />
     </Avatar>
 
-    <!-- Name with typewriter -->
     <div class="mb-3">
       <span
         class="inline-block overflow-hidden border-r-[3px] text-2xl font-bold whitespace-nowrap text-od-bright"
@@ -87,7 +85,6 @@ onUnmounted(() => {
       >
     </div>
 
-    <!-- Subtitle with flicker -->
     <p
       class="text-sm text-od-text"
       :style="{
@@ -98,7 +95,6 @@ onUnmounted(() => {
       product engineer
     </p>
 
-    <!-- Tagline -->
     <p
       class="mt-6 max-w-sm text-center text-xs text-od-text/60"
       :style="{
@@ -109,7 +105,6 @@ onUnmounted(() => {
       Instead of a CV, I built a bot. Ask it about me.
     </p>
 
-    <!-- Suggestion buttons -->
     <div
       class="mt-6 flex flex-wrap justify-center gap-2"
       :style="{
@@ -127,7 +122,6 @@ onUnmounted(() => {
       </button>
     </div>
 
-    <!-- Or type hint -->
     <p
       class="mt-4 text-xs text-od-text/60"
       :style="{
