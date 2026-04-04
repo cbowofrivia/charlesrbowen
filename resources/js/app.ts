@@ -1,7 +1,7 @@
 import { createInertiaApp } from '@inertiajs/vue3';
 import { initializeTheme } from '@/composables/useAppearance';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Charles Bowen';
+const appName = import.meta.env.VITE_APP_NAME || 'Charles R. Bowen';
 
 createInertiaApp({
     title: (title: string) => (title ? `${title} - ${appName}` : appName),

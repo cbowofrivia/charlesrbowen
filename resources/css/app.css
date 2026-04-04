@@ -118,68 +118,152 @@
     }
 }
 
-/* Compact prose overrides for chat messages */
-@layer base {
-    .prose-compact {
-        --tw-prose-body: var(--color-od-text);
+/* Chat markdown — self-contained typography for bot messages */
+.chat-markdown {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--color-od-text);
 
-        h1, h2, h3, h4, h5, h6 {
-            font-size: inherit;
-            font-weight: 700;
-            margin-top: 0.25em;
-            margin-bottom: 0;
-        }
+    h1, h2, h3, h4, h5, h6 {
+        font-size: 0.8125rem;
+        font-weight: 700;
+        margin-top: 0.8em;
+        margin-bottom: 0.1em;
+        line-height: 1.3;
+        color: var(--color-od-bright);
+    }
 
-        p {
-            margin-top: 0.125em;
-            margin-bottom: 0;
-        }
+    p {
+        margin-top: 0.3em;
+        margin-bottom: 0;
+    }
 
-        ul, ol {
-            margin-top: 0;
-            margin-bottom: 0;
-            padding-left: 1.25em;
-        }
+    ul {
+        margin-top: 0.2em;
+        margin-bottom: 0.2em;
+        padding-left: 1em;
+        list-style-type: disc;
+    }
 
-        li {
-            margin: 0;
-            padding-left: 0;
-        }
+    ol {
+        margin-top: 0.2em;
+        margin-bottom: 0.2em;
+        padding-left: 1em;
+        list-style-type: decimal;
+    }
 
-        li::marker {
-            color: var(--color-od-border);
-        }
+    li {
+        margin-top: 0.1em;
+        margin-bottom: 0;
+        padding-left: 0;
+        line-height: 1.5;
+    }
 
-        hr {
-            display: none;
-        }
+    li::marker {
+        color: var(--color-od-blue);
+    }
 
-        pre {
-            margin-top: 0.25em;
-            margin-bottom: 0.25em;
-            padding: 0.5em 0.75em;
-            font-size: inherit;
-        }
+    hr {
+        display: none;
+    }
 
-        code {
-            font-size: inherit;
-        }
+    strong {
+        color: var(--color-od-bright);
+    }
 
-        blockquote {
-            margin-top: 0.25em;
-            margin-bottom: 0.25em;
-            padding-left: 0.75em;
-            border-color: var(--color-od-border);
-        }
+    em {
+        color: var(--color-od-orange);
+        font-style: italic;
+    }
 
-        > :first-child {
-            margin-top: 0;
-        }
+    a {
+        color: var(--color-od-blue);
+        text-decoration: none;
 
-        > :last-child {
-            margin-bottom: 0;
+        &:hover {
+            text-decoration: underline;
         }
     }
+
+    code {
+        font-size: 0.75rem;
+        color: var(--color-od-cyan);
+        background: var(--color-od-gutter);
+        padding: 0.1em 0.3em;
+        border-radius: 0.2em;
+    }
+
+    pre {
+        margin-top: 0.2em;
+        margin-bottom: 0.2em;
+        padding: 0.4em 0.6em;
+        font-size: 0.75rem;
+        line-height: 1.4;
+        background: var(--color-od-gutter);
+        border: 1px solid var(--color-od-border);
+        border-radius: 0.25rem;
+        overflow-x: auto;
+
+        code {
+            color: inherit;
+            background: none;
+            padding: 0;
+        }
+    }
+
+    blockquote {
+        margin-top: 0.2em;
+        margin-bottom: 0.2em;
+        padding-left: 0.75em;
+        border-left: 2px solid var(--color-od-blue);
+        color: var(--color-od-text);
+        opacity: 0.8;
+    }
+
+    > :first-child {
+        margin-top: 0;
+    }
+
+    > :last-child {
+        margin-bottom: 0;
+    }
+}
+
+/* Typewriter animation */
+@keyframes typewriter {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes blink-caret {
+    0%, 49% { border-color: var(--color-od-blue); }
+    50%, 100% { border-color: transparent; }
+}
+
+@keyframes fade-slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes flicker-in {
+    0% { opacity: 0; }
+    5% { opacity: 0.5; }
+    10% { opacity: 0; }
+    15% { opacity: 0.7; }
+    20% { opacity: 0.3; }
+    30% { opacity: 1; }
+    100% { opacity: 1; }
 }
 
 /* Scanline overlay */

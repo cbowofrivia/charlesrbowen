@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import type { ChatMessage } from '@/types';
 
 const props = defineProps<{
@@ -25,24 +26,31 @@ const renderedContent = computed(() => {
         "
     >
         <span
-            class="mb-1 block text-xs"
+            class="mb-1 flex items-center gap-1.5 text-xs"
             :class="
                 message.role === 'user'
                     ? 'text-od-green'
                     : 'text-od-blue'
             "
         >
+            <Avatar v-if="message.role === 'assistant'" class="size-4">
+                <AvatarImage
+                    src="/images/charles.webp"
+                    alt=""
+                    style="image-rendering: pixelated"
+                />
+            </Avatar>
             {{ message.role === 'user' ? '> you' : '> bot' }}
         </span>
 
-        <div v-if="message.role === 'user'" class="text-sm text-od-bright">
+        <div v-if="message.role === 'user'" class="text-[0.8125rem] leading-[1.4] text-od-bright">
             {{ message.content }}
         </div>
 
         <template v-else>
             <div
                 v-if="message.content"
-                class="prose prose-sm prose-invert prose-compact max-w-none prose-p:text-od-text prose-strong:text-od-bright prose-a:text-od-blue prose-a:no-underline hover:prose-a:underline prose-code:text-od-cyan prose-pre:bg-od-gutter prose-pre:border prose-pre:border-od-border prose-headings:text-od-bright prose-li:text-od-text"
+                class="chat-markdown"
                 v-html="renderedContent"
             />
             <span

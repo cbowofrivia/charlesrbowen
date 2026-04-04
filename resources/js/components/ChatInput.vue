@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, watch, nextTick, onMounted } from 'vue';
+import { ref, computed, watch, nextTick, onMounted } from 'vue';
+import { SendHorizontal } from 'lucide-vue-next';
 
-defineProps<{
+const props = defineProps<{
     disabled?: boolean;
 }>();
 
@@ -9,8 +10,31 @@ const emit = defineEmits<{
     send: [message: string];
 }>();
 
+const commands = [
+    { name: '/skills', description: 'Technical skills & stack', prompt: 'What are Charles\'s technical skills and tech stack?' },
+    { name: '/experience', description: 'Work history', prompt: 'Tell me about Charles\'s work experience and career history.' },
+    { name: '/projects', description: 'Things he\'s built', prompt: 'What projects has Charles worked on?' },
+    { name: '/education', description: 'Education & learning', prompt: 'What is Charles\'s educational background?' },
+    { name: '/contact', description: 'How to reach him', prompt: 'How can I get in touch with Charles?' },
+];
+
 const input = ref('');
 const textarea = ref<HTMLTextAreaElement | null>(null);
+const showCommands = ref(false);
+const selectedCommandIndex = ref(0);
+
+const filteredCommands = computed(() => {
+    if (!input.value.startsWith('/')) return [];
+
+    const query = input.value.toLowerCase();
+
+    return commands.filter((cmd) => cmd.name.startsWith(query));
+});
+
+watch(input, (value) => {
+    showCommands.value = value.startsWith('/') && filteredCommands.value.length > 0;
+    selectedCommandIndex.value = 0;
+});
 
 function resize() {
     nextTick(() => {
@@ -27,7 +51,26 @@ onMounted(() => {
     textarea.value?.focus();
 });
 
+// Refocus after streaming ends
+watch(() => props.disabled, (disabled) => {
+    if (!disabled) {
+        nextTick(() => textarea.value?.focus());
+    }
+});
+
+function executeCommand(command: (typeof commands)[0]) {
+    showCommands.value = false;
+    input.value = '';
+    emit('send', command.prompt);
+}
+
 function handleSend() {
+    if (showCommands.value && filteredCommands.value.length > 0) {
+        executeCommand(filteredCommands.value[selectedCommandIndex.value]);
+
+        return;
+    }
+
     const trimmed = input.value.trim();
 
     if (!trimmed) {
@@ -36,9 +79,46 @@ function handleSend() {
 
     emit('send', trimmed);
     input.value = '';
+    nextTick(() => textarea.value?.focus());
 }
 
 function handleKeydown(event: KeyboardEvent) {
+    if (showCommands.value) {
+        if (event.key === 'ArrowDown') {
+            event.preventDefault();
+            selectedCommandIndex.value = Math.min(
+                selectedCommandIndex.value + 1,
+                filteredCommands.value.length - 1,
+            );
+
+            return;
+        }
+
+        if (event.key === 'ArrowUp') {
+            event.preventDefault();
+            selectedCommandIndex.value = Math.max(
+                selectedCommandIndex.value - 1,
+                0,
+            );
+
+            return;
+        }
+
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            showCommands.value = false;
+
+            return;
+        }
+
+        if (event.key === 'Tab') {
+            event.preventDefault();
+            executeCommand(filteredCommands.value[selectedCommandIndex.value]);
+
+            return;
+        }
+    }
+
     if (event.key === 'Enter' && !event.shiftKey) {
         event.preventDefault();
         handleSend();
@@ -47,9 +127,31 @@ function handleKeydown(event: KeyboardEvent) {
 </script>
 
 <template>
-    <div class="border-t border-od-border bg-od-bg-light px-4 py-3">
+    <div class="relative border-t border-od-border bg-od-bg-light px-4 py-3">
+        <!-- Command palette -->
+        <div
+            v-if="showCommands"
+            class="absolute bottom-full left-0 right-0 border-t border-od-border bg-od-gutter p-1"
+        >
+            <button
+                v-for="(command, index) in filteredCommands"
+                :key="command.name"
+                class="flex w-full items-center gap-3 rounded px-3 py-1.5 text-left text-xs transition-colors"
+                :class="
+                    index === selectedCommandIndex
+                        ? 'bg-od-border/50 text-od-bright'
+                        : 'text-od-text hover:bg-od-border/30'
+                "
+                @click="executeCommand(command)"
+                @mouseenter="selectedCommandIndex = index"
+            >
+                <span class="text-od-blue">{{ command.name }}</span>
+                <span class="text-od-border">{{ command.description }}</span>
+            </button>
+        </div>
+
         <div class="flex items-start gap-3">
-            <span class="mt-0.75 text-sm leading-none text-od-blue select-none"
+            <span class="mt-0.75 text-[0.8125rem] leading-none text-od-blue select-none"
                 >&gt;</span
             >
             <textarea
@@ -57,27 +159,25 @@ function handleKeydown(event: KeyboardEvent) {
                 v-model="input"
                 :disabled="disabled"
                 rows="1"
-                placeholder="Ask about Charles..."
-                class="max-h-40 flex-1 resize-none overflow-y-auto bg-transparent text-sm text-od-bright outline-none placeholder:text-od-border disabled:opacity-50"
+                placeholder="Ask something..."
+                class="max-h-40 flex-1 resize-none overflow-y-auto bg-transparent text-[0.8125rem] leading-[1.4] text-od-bright outline-none placeholder:text-od-border disabled:opacity-50"
                 @keydown="handleKeydown"
             />
             <button
                 :disabled="disabled || !input.trim()"
-                class="mt-0.5 hidden text-od-blue disabled:opacity-30 touch:block"
+                class="hidden text-od-blue disabled:opacity-30 touch:block"
                 aria-label="Send message"
                 @click="handleSend"
             >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    class="h-5 w-5"
-                >
-                    <path
-                        d="M3.105 2.288a.75.75 0 0 0-.826.95l1.414 4.926A1.5 1.5 0 0 0 5.135 9.25h6.115a.75.75 0 0 1 0 1.5H5.135a1.5 1.5 0 0 0-1.442 1.086l-1.414 4.926a.75.75 0 0 0 .826.95 28.897 28.897 0 0 0 15.293-7.155.75.75 0 0 0 0-1.114A28.897 28.897 0 0 0 3.105 2.288Z"
-                    />
-                </svg>
+                <SendHorizontal class="size-4" />
             </button>
         </div>
+
+        <p
+            v-if="!input && !showCommands"
+            class="mt-2 text-right text-xs text-od-text/30"
+        >
+            type <span class="text-od-blue/40">/</span> for commands
+        </p>
     </div>
 </template>
