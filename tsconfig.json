@@ -1,38 +1,24 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "jsx": "preserve",
-    "jsxImportSource": "vue",
-
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-
-    "resolveJsonModule": true,
-    "allowJs": true,
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "useDefineForClassFields": true,
-
-    "sourceMap": true,
-    "noEmit": true,
-    "skipLibCheck": true,
-
-    "paths": {
-      "@/*": ["./resources/js/*"]
-    },
-    "types": ["vite/client"]
-  },
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": [
     "resources/js/**/*.ts",
     "resources/js/**/*.d.ts",
     "resources/js/**/*.tsx",
     "resources/js/**/*.vue"
-  ]
+  ],
+  "compilerOptions": {
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+
+    "allowJs": true,
+    "sourceMap": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["resources/js/*"]
+    },
+    "types": ["vite/client"]
+  }
 }
