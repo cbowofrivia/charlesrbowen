@@ -4,14 +4,12 @@ namespace App\Ai\Agents;
 
 use App\Models\Conversation;
 use App\Services\SystemPromptService;
-use Laravel\Ai\Attributes\UseCheapestModel;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\Conversational;
 use Laravel\Ai\Messages\Message;
 use Laravel\Ai\Promptable;
 use Stringable;
 
-#[UseCheapestModel]
 class CvAgent implements Agent, Conversational
 {
     use Promptable;
