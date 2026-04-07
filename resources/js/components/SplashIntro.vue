@@ -115,7 +115,7 @@ onUnmounted(() => {
       <button
         v-for="suggestion in suggestions"
         :key="suggestion"
-        class="rounded border border-od-border px-3 py-1.5 text-xs text-od-text transition-colors hover:border-od-blue hover:text-od-blue"
+        class="rounded border border-od-border px-4 py-3 text-xs text-od-text transition-colors hover:border-od-blue hover:text-od-blue"
         @click="complete(suggestion)"
       >
         {{ suggestion }}

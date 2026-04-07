@@ -21,7 +21,7 @@ function resetChat() {
 
 <template>
   <div
-    class="flex h-screen items-center justify-center bg-od-gutter text-od-text md:p-4"
+    class="flex h-dvh items-center justify-center bg-od-gutter pt-[env(safe-area-inset-top)] text-od-text md:p-4"
   >
     <div
       class="scanlines flex h-full w-full flex-col overflow-hidden bg-od-bg md:h-[94vh] md:max-w-[900px] md:rounded-xl md:border md:border-od-border md:shadow-2xl md:shadow-black/50"
