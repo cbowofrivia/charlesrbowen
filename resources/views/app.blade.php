@@ -15,6 +15,11 @@
         <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
         @vite(['resources/css/app.css', 'resources/js/app.ts', "resources/js/pages/{$page['component']}.vue"])
+
+        <!-- Fathom - beautiful, simple website analytics -->
+        <script src="https://cdn.usefathom.com/script.js" data-spa="auto" data-site="HRLBNIFP" defer></script>
+        <!-- / Fathom -->
+
         <x-inertia::head />
         {!! seo() !!}
     </head>
