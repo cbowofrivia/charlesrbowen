@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Code, Briefcase, Lightbulb } from 'lucide-vue-next';
 import { ref, onMounted, onUnmounted } from 'vue';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 
@@ -11,9 +12,17 @@ const ready = ref(false);
 const done = ref(false);
 
 const suggestions = [
-  "What's his tech stack?",
-  'Tell me about his experience',
-  'What has he built?',
+  { label: 'Tech Stack', icon: Code, prompt: "What's his tech stack?" },
+  {
+    label: 'Experience',
+    icon: Briefcase,
+    prompt: 'Tell me about his work experience and career history.',
+  },
+  {
+    label: 'Interests',
+    icon: Lightbulb,
+    prompt: 'What are his interests and what is he exploring right now?',
+  },
 ];
 
 function complete(message?: string) {
@@ -57,6 +66,7 @@ onUnmounted(() => {
     :class="
       done ? 'pointer-events-none -translate-y-4 opacity-0' : 'opacity-100'
     "
+    @click.self="complete()"
   >
     <Avatar
       class="mb-5 size-14"
@@ -92,7 +102,7 @@ onUnmounted(() => {
         opacity: 0,
       }"
     >
-      product engineer
+      Product Engineer
     </p>
 
     <p
@@ -102,7 +112,7 @@ onUnmounted(() => {
         opacity: 0,
       }"
     >
-      Instead of a CV, I built a bot. Ask it about me.
+      Instead of a CV, I built an AI agent. Ask it anything.
     </p>
 
     <div
@@ -114,11 +124,12 @@ onUnmounted(() => {
     >
       <button
         v-for="suggestion in suggestions"
-        :key="suggestion"
-        class="rounded border border-od-border px-4 py-3 text-xs text-od-text transition-colors hover:border-od-blue hover:text-od-blue"
-        @click="complete(suggestion)"
+        :key="suggestion.label"
+        class="flex items-center gap-2 rounded border border-od-border px-4 py-3 text-xs text-od-text transition-colors hover:border-od-blue hover:text-od-blue"
+        @click="complete(suggestion.prompt)"
       >
-        {{ suggestion }}
+        <component :is="suggestion.icon" class="size-3.5" />
+        {{ suggestion.label }}
       </button>
     </div>
 
@@ -129,7 +140,8 @@ onUnmounted(() => {
         opacity: 0,
       }"
     >
-      or press any key to start typing
+      <span class="hidden md:inline">or press any key to start typing</span>
+      <span class="md:hidden">or tap anywhere to start</span>
     </p>
   </div>
 </template>
