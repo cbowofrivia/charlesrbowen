@@ -151,7 +151,9 @@ function handleKeydown(event: KeyboardEvent) {
 </script>
 
 <template>
-  <div class="relative border-t border-od-border bg-od-bg-light px-4 py-3">
+  <div
+    class="relative border-t border-od-border bg-od-bg-light px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+  >
     <div
       v-if="showCommands"
       class="absolute right-0 bottom-full left-0 border-t border-od-border bg-od-gutter p-1"
@@ -184,16 +186,16 @@ function handleKeydown(event: KeyboardEvent) {
         :disabled="disabled"
         rows="1"
         placeholder="Ask something..."
-        class="max-h-40 flex-1 resize-none overflow-y-auto bg-transparent text-[0.8125rem] leading-[1.4] text-od-bright outline-none placeholder:text-od-border disabled:opacity-50"
+        class="scrollbar-none max-h-40 flex-1 resize-none overflow-y-auto bg-transparent text-[0.8125rem] leading-[1.4] text-od-bright outline-none placeholder:text-od-border disabled:opacity-50 touch:text-base"
         @keydown="handleKeydown"
       />
       <button
         :disabled="disabled || !input.trim()"
-        class="hidden text-od-blue disabled:opacity-30 touch:block"
+        class="hidden p-2 text-od-blue disabled:opacity-30 touch:block"
         aria-label="Send message"
         @click="handleSend"
       >
-        <SendHorizontal class="size-4" />
+        <SendHorizontal class="size-5" />
       </button>
     </div>
 

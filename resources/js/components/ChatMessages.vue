@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, nextTick } from 'vue';
+import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue';
 import ChatMessage from '@/components/ChatMessage.vue';
 import type { ChatMessage as ChatMessageType } from '@/types';
 
@@ -26,6 +26,18 @@ watch(
   () => props.messages[props.messages.length - 1]?.content,
   () => scrollToBottom(),
 );
+
+function onViewportResize() {
+  scrollToBottom();
+}
+
+onMounted(() => {
+  window.visualViewport?.addEventListener('resize', onViewportResize);
+});
+
+onUnmounted(() => {
+  window.visualViewport?.removeEventListener('resize', onViewportResize);
+});
 </script>
 
 <template>
