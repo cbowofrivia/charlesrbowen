@@ -12,7 +12,7 @@ Proposes solutions proactively, iterates from zero to one, and takes ownership o
 
 ## Experience
 
-> **Teemill** is a trading partnerships platform where charities, businesses, and brands partner with a sustainable print-on-demand manufacturer to sell merchandise and garments through bespoke e-commerce storefronts. **PodOS** grew out of Teemill — the same team and organisation, but a new company offering the all-in-one operating system as a standalone B2B product. PodOS covers everything from domain management and website hosting through to stock management, fulfilment, order management, and factory robotics for print-on-demand manufacturing. Charles has been part of this organisation for over 8 years, progressing through four distinct roles.
+> **Teemill** is a trading partnerships platform where charities, businesses, and brands partner with a sustainable print-on-demand manufacturer to sell merchandise and garments through bespoke e-commerce storefronts. **PodOS** grew out of Teemill — the same team and organisation, but a new company offering the all-in-one operating system as a standalone B2B product. PodOS covers everything from domain management and website hosting through to stock management, fulfilment, order management, and factory robotics for print-on-demand manufacturing. The platform serves hundreds of factories and tens of thousands of brands. Charles has been part of this organisation for over 8 years, progressing through four distinct roles.
 
 ### Project Lead Engineer — PodOS
 
@@ -61,7 +61,7 @@ Grew from a platform engineer into someone owning major systems end-to-end. Buil
 
 Key achievements:
 
-- **Built and launched Teemail, an internal email marketing platform, end-to-end** — from domain warmup and deliverability infrastructure (DMARC/DNS setup, bounce/complaint webhook handlers, Mailgun integration) through to a drag-and-drop email builder, campaign scheduling, mailing list management, subscriber origin tracking, and campaign statistics with revenue attribution via UTM-tracked conversions. Public launch in October 2021.
+- **Built and launched Teemail, an internal email marketing platform, end-to-end** — from domain warmup and deliverability infrastructure (DMARC/DNS setup, bounce/complaint webhook handlers, Mailgun integration) through to a drag-and-drop email builder, campaign scheduling, mailing list management, subscriber origin tracking, and campaign statistics with revenue attribution via UTM-tracked conversions. The platform now sends close to 300 million emails per year. Public launch in October 2021.
 - **Built a real-time internal chat platform** — MQTT-based messaging with encrypted broadcasting, file/image uploads, channel management, task assignment from messages, toxic word filtering with async moderation, sentiment analysis with a KPI dashboard, private VIP channels, team mentions, and jump-to-message linking.
 - **Built and owned a Node.js image processing microservice** — image transformation (resize, crop, format conversion) backed by GCP/GCS and Redis. Designed an encrypted URL signing scheme with batch encryption tooling, implemented CORS domain restrictions, and led a phased platform-wide migration routing all images through the service. 1,400+ line refactor PR.
 - **Led incremental major version upgrades** — Laravel 7 to 8, PHP 7.4 to 8.0. Introduced PHPStan for static analysis and migrated the test suite from PHPUnit to Pest.
@@ -118,9 +118,9 @@ Used ArcGIS for map modelling and data analysis, which sparked an interest in so
 
 ## Side Projects
 
-### dndplaybook.com
+### [dndplaybook.com](https://dndplaybook.com)
 
-A D&D companion app and Charles's primary side project — self-funding and actively developed. Built as a playground for exploring agentic AI, text-to-image generation, and emerging AI tooling. Showcases product thinking applied outside of work: identifying a niche, building for real users, and iterating based on usage.
+A D&D companion app and Charles's primary side project — self-funding and actively developed. Built with Laravel, Inertia.js, Vue 3, and TypeScript with server-side rendering. Users value it for its AI integrations. Built as a playground for exploring agentic AI, text-to-image generation, and emerging AI tooling. Showcases product thinking applied outside of work: identifying a niche, building for real users, and iterating based on usage.
 
 ### charlesrbowen.dev
 
@@ -132,7 +132,7 @@ An open-source PHP package for building DMARC records programmatically. Born fro
 
 ### Claude Code Skills
 
-A public open-source directory of Claude Code skills, maintained on GitHub.
+A public open-source collection of reusable Claude Code skills used across multiple projects, maintained on GitHub.
 
 ### Hardware & IoT
 
