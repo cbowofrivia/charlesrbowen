@@ -122,7 +122,7 @@ Used ArcGIS for map modelling and data analysis, which sparked an interest in so
 
 A D&D companion app and Charles's primary side project — self-funding and actively developed. Built as a playground for exploring agentic AI, text-to-image generation, and emerging AI tooling. Showcases product thinking applied outside of work: identifying a niche, building for real users, and iterating based on usage.
 
-### charlesrbowen.com
+### charlesrbowen.dev
 
 This site. A chat-based CV built with Laravel 13, Vue 3, and Inertia.js v3. Visitors interact with an AI agent rather than reading a static page — demonstrating that Charles builds things differently when given the freedom to.
 
