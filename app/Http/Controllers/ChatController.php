@@ -22,7 +22,7 @@ class ChatController extends Controller
             'session_id' => ['required', 'uuid'],
         ]);
 
-        $conversation = Conversation::firstOrCreate(
+        $conversation = Conversation::query()->firstOrCreate(
             ['session_id' => $validated['session_id']],
             ['ip_address' => $request->ip()],
         );
@@ -37,7 +37,6 @@ class ChatController extends Controller
         $stream = $agent->stream($validated['message']);
 
         return response()->stream(function () use ($stream, $conversation) {
-            // Disable output buffering for real-time streaming
             while (ob_get_level()) {
                 ob_end_flush();
             }
