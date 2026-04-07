@@ -186,7 +186,7 @@ function handleKeydown(event: KeyboardEvent) {
         :disabled="disabled"
         rows="1"
         placeholder="Ask something..."
-        class="max-h-40 flex-1 resize-none overflow-y-auto bg-transparent text-[0.8125rem] leading-[1.4] text-od-bright outline-none placeholder:text-od-border disabled:opacity-50 touch:text-base"
+        class="scrollbar-none max-h-40 flex-1 resize-none overflow-y-auto bg-transparent text-[0.8125rem] leading-[1.4] text-od-bright outline-none placeholder:text-od-border disabled:opacity-50 touch:text-base"
         @keydown="handleKeydown"
       />
       <button
