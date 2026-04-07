@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "skills": {
+    "create-pr": {
+      "source": "cbowofrivia/skills",
+      "sourceType": "github",
+      "computedHash": "ae359b6c4d803bb71d5e1ae5d882dbd21d1f2749540e80c28c857a626a4d292f"
+    },
+    "resolve_todo_parallel": {
+      "source": "cbowofrivia/skills",
+      "sourceType": "github",
+      "computedHash": "296c310b66008abf34380e7e9e0958eb89b0a7d518677044995c77fb636f6bcf"
+    },
+    "workflow:brainstorm": {
+      "source": "cbowofrivia/skills",
+      "sourceType": "github",
+      "computedHash": "58d84c8cabb2d3d5eaf4c46a838a9503268a485cfc487a20a4f5f57b806dfde5"
+    },
+    "workflow:plan": {
+      "source": "cbowofrivia/skills",
+      "sourceType": "github",
+      "computedHash": "81cac7537a0b55c06eb265c9fb961b9f0d4734a4dc0e7be914d9a97fef58f018"
+    },
+    "workflow:review": {
+      "source": "cbowofrivia/skills",
+      "sourceType": "github",
+      "computedHash": "8e430f85703550bd157dbfb9d086daaac8416c993095909d5326103d5f3d3f36"
+    },
+    "workflow:work": {
+      "source": "cbowofrivia/skills",
+      "sourceType": "github",
+      "computedHash": "f9c51710cd8ada90e63060ad910997e29f71f1f8940c5f331e5cad8a9db5d312"
+    }
+  }
+}
