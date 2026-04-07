@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
 import { ref, defineAsyncComponent } from 'vue';
 import SplashIntro from '@/components/SplashIntro.vue';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
@@ -21,8 +20,6 @@ function resetChat() {
 </script>
 
 <template>
-  <Head title="Charles R. Bowen" />
-
   <div
     class="flex h-screen items-center justify-center bg-od-gutter text-od-text md:p-4"
   >

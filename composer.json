@@ -1,11 +1,11 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/vue-starter-kit",
+    "name": "charlesrbowen/charlesrbowen.com",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "Personal portfolio and CV chat application for Charles R. Bowen.",
     "keywords": [
-        "laravel",
-        "framework"
+        "portfolio",
+        "cv"
     ],
     "license": "MIT",
     "require": {
@@ -13,8 +13,10 @@
         "inertiajs/inertia-laravel": "^3.0",
         "laravel/ai": "^0.4.3",
         "laravel/framework": "^13.0",
+        "laravel/nightwatch": "^1.26",
         "laravel/tinker": "^3.0",
-        "laravel/wayfinder": "^0.1.14"
+        "laravel/wayfinder": "^0.1.14",
+        "ralphjsmit/laravel-seo": "^1.8"
     },
     "require-dev": {
         "fakerphp/faker": "^1.24",
