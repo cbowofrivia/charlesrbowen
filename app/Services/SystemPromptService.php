@@ -10,8 +10,8 @@ class SystemPromptService
     public function getPrompt(): string
     {
         return once(function () {
-            $promptPath = storage_path('app/prompt.md');
-            $cvPath = storage_path('app/cv.md');
+            $promptPath = base_path('documents/prompt.md');
+            $cvPath = base_path('documents/cv.md');
 
             $guardrails = file_exists($promptPath) ? file_get_contents($promptPath) : '';
             $cv = file_exists($cvPath) ? file_get_contents($cvPath) : '';

@@ -1,7 +1,6 @@
 <?php
 
 use App\Services\SystemPromptService;
-use Illuminate\Support\Facades\Storage;
 
 it('assembles the system prompt from prompt.md and cv.md', function () {
     $service = app(SystemPromptService::class);
@@ -34,11 +33,22 @@ it('includes cv content', function () {
 });
 
 it('handles missing files gracefully', function () {
-    Storage::disk('local')->delete('prompt.md');
-    Storage::disk('local')->delete('cv.md');
+    $promptPath = base_path('documents/prompt.md');
+    $cvPath = base_path('documents/cv.md');
 
-    $service = new SystemPromptService;
-    $prompt = $service->getPrompt();
+    $promptBackup = file_get_contents($promptPath);
+    $cvBackup = file_get_contents($cvPath);
 
-    expect($prompt)->toBeString();
+    rename($promptPath, $promptPath.'.bak');
+    rename($cvPath, $cvPath.'.bak');
+
+    try {
+        $service = new SystemPromptService;
+        $prompt = $service->getPrompt();
+
+        expect($prompt)->toBeString();
+    } finally {
+        rename($promptPath.'.bak', $promptPath);
+        rename($cvPath.'.bak', $cvPath);
+    }
 });
