@@ -14,7 +14,7 @@ Proposes solutions proactively, iterates from zero to one, and takes ownership o
 
 > **Teemill** is a trading partnerships platform where charities, businesses, and brands partner with a sustainable print-on-demand manufacturer to sell merchandise and garments through bespoke e-commerce storefronts. **PodOS** grew out of Teemill — the same team and organisation, but a new company offering the all-in-one operating system as a standalone B2B product. PodOS covers everything from domain management and website hosting through to stock management, fulfilment, order management, and factory robotics for print-on-demand manufacturing. The platform serves hundreds of factories and tens of thousands of brands. Charles has been part of this organisation for over 8 years, progressing through four distinct roles.
 
-### Project Lead Engineer — PodOS
+### Project Lead Engineer — PodOS (Current Role)
 
 **January 2025 – Present | Hybrid (near Bristol, UK)**
 
@@ -94,30 +94,20 @@ Used ArcGIS for map modelling and data analysis, which sparked an interest in so
 
 ## Technical Skills
 
-**Languages:** PHP, JavaScript, TypeScript, HTML, CSS
-
-**Backend:** Laravel, Node.js, Inertia.js, Server-Side Rendering (SSR)
-
-**Frontend:** Vue.js, Tailwind CSS, TipTap
-
-**Databases:** PostgreSQL, MySQL, SQLite, Redis, Elasticsearch
-
-**Infrastructure:** GCP, Docker, Kubernetes, CI/CD, GitHub Actions
-
-**Email & Deliverability:** Mailgun, DMARC/DNS, domain warmup, bounce handling, campaign analytics
-
-**APIs & Integration:** Stripe, OpenAPI/YAML, REST, MQTT, WebPush
-
-**AI:** Laravel AI SDK, Anthropic Claude API, OpenAI API, agentic AI patterns
-
-**Monitoring:** Datadog (APM, tracing), Sentry
-
-**Practices:** Test-driven development (Pest), static analysis (PHPStan), code review, A/B testing, agile, iterative delivery
-
-**Tools:** Git, Laravel Pint, Vite, Figma, Make.com
+**Languages:** - PHP, JavaScript, TypeScript, HTML, CSS
+**Backend:** - Laravel, Node.js, Inertia.js, Server-Side Rendering (SSR)
+**Frontend:** - Vue.js, Tailwind CSS, TipTap
+**Databases:** - PostgreSQL, MySQL, SQLite, Redis, Elasticsearch
+**Infrastructure:** - GCP, Docker, Kubernetes, CI/CD, GitHub Actions
+**Email & Deliverability:** - Mailgun, DMARC/DNS, domain warmup, bounce handling, campaign analytics
+**APIs & Integration:** - Stripe, OpenAPI/YAML, REST, MQTT, WebPush
+**AI:** - Laravel AI SDK, Anthropic Claude API, OpenAI API, agentic AI patterns
+**Monitoring:** - Datadog (APM, tracing), Sentry
+**Practices:** - Test-driven development (Pest), static analysis (PHPStan), code review, A/B testing, agile, iterative delivery
+**Tools:** - Git, Laravel Pint, Vite, Figma, Make.com
 
 ## Side Projects
-
+****
 ### [dndplaybook.com](https://dndplaybook.com)
 
 A D&D companion app and Charles's primary side project — self-funding and actively developed. Built with Laravel, Inertia.js, Vue 3, and TypeScript with server-side rendering. Users value it for its AI integrations. Built as a playground for exploring agentic AI, text-to-image generation, and emerging AI tooling. Showcases product thinking applied outside of work: identifying a niche, building for real users, and iterating based on usage.
@@ -130,17 +120,9 @@ This site. A chat-based CV built with Laravel 13, Vue 3, and Inertia.js v3. Visi
 
 An open-source PHP package for building DMARC records programmatically. Born from hands-on experience building email deliverability infrastructure at Teemill. Available on GitHub.
 
-### Claude Code Skills
-
-A public open-source collection of reusable Claude Code skills used across multiple projects, maintained on GitHub.
-
 ### Hardware & IoT
 
 Built a custom gaming table with LED light strips controllable via the Philips Hue API, driven by an Arduino controller with custom lighting functions. Various Raspberry Pi and IoT automation projects over the years — the same curiosity that led from geology to software.
-
-### Automation
-
-Uses Make.com to build cross-platform automation workflows — publishing pipelines, data syncing, and operational tooling.
 
 ## Working Style
 
