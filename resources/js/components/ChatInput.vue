@@ -8,9 +8,17 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   send: [message: string];
+  reset: [];
 }>();
 
-const commands = [
+type Command = {
+  name: string;
+  description: string;
+  prompt?: string;
+  action?: () => void;
+};
+
+const commands: Command[] = [
   {
     name: '/skills',
     description: 'Technical skills & stack',
@@ -35,6 +43,11 @@ const commands = [
     name: '/contact',
     description: 'How to reach him',
     prompt: 'How can I get in touch with Charles?',
+  },
+  {
+    name: '/reset',
+    description: 'Start a new conversation',
+    action: () => emit('reset'),
   },
 ];
 
@@ -85,10 +98,15 @@ watch(
   },
 );
 
-function executeCommand(command: (typeof commands)[0]) {
+function executeCommand(command: Command) {
   showCommands.value = false;
   input.value = '';
-  emit('send', command.prompt);
+
+  if (command.action) {
+    command.action();
+  } else if (command.prompt) {
+    emit('send', command.prompt);
+  }
 }
 
 function handleSend() {

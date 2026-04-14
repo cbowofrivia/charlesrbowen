@@ -8,6 +8,10 @@ const props = defineProps<{
   initialMessage?: string;
 }>();
 
+const emit = defineEmits<{
+  reset: [];
+}>();
+
 const { messages, isStreaming, isLoading, error, sendMessage, loadMessages } =
   useChat();
 
@@ -27,5 +31,9 @@ onMounted(async () => {
     {{ error }}
   </div>
 
-  <ChatInput :disabled="isStreaming || isLoading" @send="sendMessage" />
+  <ChatInput
+    :disabled="isStreaming || isLoading"
+    @send="sendMessage"
+    @reset="emit('reset')"
+  />
 </template>

@@ -47,20 +47,8 @@ function resetChat() {
           >
         </div>
 
-        <button
-          class="ml-auto text-od-text/40 transition-colors hover:text-od-bright md:hidden"
-          aria-label="New conversation"
-          @click="resetChat"
-        >
-          <RotateCcw class="size-3.5" />
-        </button>
-
         <div class="hidden items-center gap-2 md:flex">
-          <button
-            class="h-3 w-3 rounded-full bg-[#ff5f57] transition-opacity hover:opacity-80"
-            aria-label="Close"
-            @click="resetChat"
-          />
+          <span class="h-3 w-3 rounded-full bg-[#ff5f57]" />
           <span class="h-3 w-3 rounded-full bg-[#febc2e]" />
           <span class="h-3 w-3 rounded-full bg-[#28c840]" />
         </div>
@@ -70,6 +58,14 @@ function resetChat() {
         >
           ~/charles-r-bowen
         </span>
+
+        <button
+          class="ml-auto cursor-pointer text-od-text/40 transition-colors hover:text-od-bright"
+          aria-label="New conversation"
+          @click="resetChat"
+        >
+          <RotateCcw class="size-3.5" />
+        </button>
       </header>
 
       <SplashIntro v-if="!showChat" @complete="onSplashComplete" />
@@ -79,7 +75,7 @@ function resetChat() {
         class="flex min-h-0 flex-1 flex-col"
         style="animation: fade-in 0.3s ease-out both"
       >
-        <Chat :initial-message="initialMessage" />
+        <Chat :initial-message="initialMessage" @reset="resetChat" />
       </div>
     </div>
   </div>
