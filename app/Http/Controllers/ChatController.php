@@ -5,18 +5,17 @@ namespace App\Http\Controllers;
 use App\Ai\Agents\CvAgent;
 use App\Enums\MessageRole;
 use App\Models\Conversation;
+use App\Models\Message;
 use App\Services\SystemPromptService;
 use Generator;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Laravel\Ai\Streaming\Events\TextDelta;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ChatController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
-    public function __invoke(Request $request): StreamedResponse
+    public function store(Request $request): StreamedResponse
     {
         $validated = $request->validate([
             'message' => ['required', 'string', 'max:2000'],
@@ -55,5 +54,28 @@ class ChatController extends Controller
                 ]);
             }
         });
+    }
+
+    public function messages(string $sessionId): JsonResponse
+    {
+        $conversation = Conversation::query()
+            ->where('session_id', $sessionId)
+            ->first();
+
+        if (! $conversation) {
+            return response()->json([]);
+        }
+
+        return response()->json(
+            $conversation->messages()
+                ->oldest()
+                ->get()
+                ->map(fn (Message $message) => [
+                    'id' => (string) $message->id,
+                    'role' => $message->role->value,
+                    'content' => $message->content,
+                ])
+                ->values()
+        );
     }
 }

@@ -18,7 +18,10 @@ const renderedContent = computed(() => {
     return '';
   }
 
-  return DOMPurify.sanitize(marked.parse(props.message.content, { renderer }) as string);
+  return DOMPurify.sanitize(
+    marked.parse(props.message.content, { renderer }) as string,
+    { ADD_ATTR: ['target'] },
+  );
 });
 </script>
 

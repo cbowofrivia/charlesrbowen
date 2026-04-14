@@ -77,3 +77,24 @@ it('validates that session_id is required and must be a uuid', function () {
         'session_id' => 'not-a-uuid',
     ])->assertInvalid(['session_id']);
 });
+
+it('returns messages for an existing session', function () {
+    $conversation = Conversation::factory()->create();
+
+    $conversation->messages()->createMany([
+        ['role' => MessageRole::User, 'content' => 'Hello'],
+        ['role' => MessageRole::Assistant, 'content' => 'Hi there!'],
+    ]);
+
+    $this->getJson(route('chat.messages', $conversation->session_id))
+        ->assertSuccessful()
+        ->assertJsonCount(2)
+        ->assertJsonFragment(['role' => 'user', 'content' => 'Hello'])
+        ->assertJsonFragment(['role' => 'assistant', 'content' => 'Hi there!']);
+});
+
+it('returns an empty array for a non-existent session', function () {
+    $this->getJson(route('chat.messages', Str::uuid()->toString()))
+        ->assertSuccessful()
+        ->assertJsonCount(0);
+});

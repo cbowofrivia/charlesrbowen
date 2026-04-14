@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import { RotateCcw } from 'lucide-vue-next';
 import { ref, defineAsyncComponent } from 'vue';
 import SplashIntro from '@/components/SplashIntro.vue';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { hasExistingSession, clearSession } from '@/composables/useChat';
 
 const Chat = defineAsyncComponent(() => import('@/components/Chat.vue'));
 
-const showChat = ref(false);
+const showChat = ref(hasExistingSession());
 const initialMessage = ref<string | undefined>();
 
 function onSplashComplete(message?: string) {
@@ -14,6 +16,7 @@ function onSplashComplete(message?: string) {
 }
 
 function resetChat() {
+  clearSession();
   showChat.value = false;
   initialMessage.value = undefined;
 }
@@ -43,6 +46,14 @@ function resetChat() {
             >~/charles-r-bowen</span
           >
         </div>
+
+        <button
+          class="ml-auto text-od-text/40 transition-colors hover:text-od-bright md:hidden"
+          aria-label="New conversation"
+          @click="resetChat"
+        >
+          <RotateCcw class="size-3.5" />
+        </button>
 
         <div class="hidden items-center gap-2 md:flex">
           <button

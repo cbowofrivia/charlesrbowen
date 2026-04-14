@@ -8,10 +8,13 @@ const props = defineProps<{
   initialMessage?: string;
 }>();
 
-const { messages, isStreaming, error, sendMessage } = useChat();
+const { messages, isStreaming, isLoading, error, sendMessage, loadMessages } =
+  useChat();
 
-onMounted(() => {
-  if (props.initialMessage) {
+onMounted(async () => {
+  await loadMessages();
+
+  if (props.initialMessage && messages.value.length === 0) {
     sendMessage(props.initialMessage);
   }
 });
@@ -24,5 +27,5 @@ onMounted(() => {
     {{ error }}
   </div>
 
-  <ChatInput :disabled="isStreaming" @send="sendMessage" />
+  <ChatInput :disabled="isStreaming || isLoading" @send="sendMessage" />
 </template>
