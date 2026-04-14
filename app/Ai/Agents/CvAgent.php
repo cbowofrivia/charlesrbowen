@@ -17,7 +17,9 @@ class CvAgent implements Agent, Conversational
     public function __construct(
         protected Conversation $conversation,
         protected SystemPromptService $promptService,
-    ) {}
+    ) {
+        // ...
+    }
 
     /**
      * Get the instructions that the agent should follow.
