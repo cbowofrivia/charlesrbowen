@@ -9,12 +9,19 @@ const props = defineProps<{
   message: ChatMessage;
 }>();
 
+const renderer = new marked.Renderer();
+renderer.link = ({ href, title, text }) =>
+  `<a href="${href}" title="${title ?? ''}" target="_blank" rel="noopener noreferrer">${text}</a>`;
+
 const renderedContent = computed(() => {
   if (!props.message.content) {
     return '';
   }
 
-  return DOMPurify.sanitize(marked.parse(props.message.content) as string);
+  return DOMPurify.sanitize(
+    marked.parse(props.message.content, { renderer }) as string,
+    { ADD_ATTR: ['target'] },
+  );
 });
 </script>
 

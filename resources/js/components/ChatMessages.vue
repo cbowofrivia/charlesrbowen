@@ -41,7 +41,10 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div ref="container" class="flex-1 space-y-3 overflow-y-auto p-4 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb:hover]:bg-white/30">
+  <div
+    ref="container"
+    class="flex-1 space-y-3 overflow-y-auto p-4 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb:hover]:bg-white/30 [&::-webkit-scrollbar-track]:bg-transparent"
+  >
     <ChatMessage
       v-for="message in messages"
       :key="message.id"

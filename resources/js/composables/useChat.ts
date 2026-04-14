@@ -4,6 +4,8 @@ import type { ChatMessage } from '@/types';
 
 type ChatBody = { message: string; session_id: string };
 
+const STORAGE_KEY = 'chat_session_id';
+
 function generateUUID(): string {
   if (
     typeof crypto !== 'undefined' &&
@@ -20,10 +22,21 @@ function generateUUID(): string {
   });
 }
 
+export function hasExistingSession(): boolean {
+  return sessionStorage.getItem(STORAGE_KEY) !== null;
+}
+
+export function clearSession(): void {
+  sessionStorage.removeItem(STORAGE_KEY);
+}
+
 export function useChat() {
   const messages = ref<ChatMessage[]>([]);
   const error = ref<string | null>(null);
-  const sessionId = generateUUID();
+  const isLoading = ref(false);
+
+  const sessionId = sessionStorage.getItem(STORAGE_KEY) ?? generateUUID();
+  sessionStorage.setItem(STORAGE_KEY, sessionId);
 
   let currentAssistantId: string | null = null;
 
@@ -65,6 +78,24 @@ export function useChat() {
     },
   );
 
+  async function loadMessages(): Promise<void> {
+    isLoading.value = true;
+
+    try {
+      const response = await fetch(`/chat/${sessionId}/messages`);
+
+      if (response.ok) {
+        const loaded: ChatMessage[] = await response.json();
+
+        if (loaded.length > 0) {
+          messages.value = loaded;
+        }
+      }
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   function sendMessage(text: string) {
     const trimmed = text.trim();
 
@@ -100,8 +131,10 @@ export function useChat() {
   return {
     messages: readonly(messages),
     isStreaming: readonly(isStreaming),
+    isLoading: readonly(isLoading),
     error: readonly(error),
     sendMessage,
+    loadMessages,
     clearMessages,
     cancel,
   };
