@@ -124,13 +124,43 @@ An open-source PHP package for building DMARC records programmatically. Born fro
 
 Built a custom gaming table with LED light strips controllable via the Philips Hue API, driven by an Arduino controller with custom lighting functions. Various Raspberry Pi and IoT automation projects over the years — the same curiosity that led from geology to software.
 
+## Interests
+
+Charles is an active tabletop gaming enthusiast. He plays D&D regularly with friends, has DM'd campaigns in the past, and built dndplaybook.com specifically to enhance his own games — bridging the physical tabletop experience with digital tools. He uses Obsidian as a campaign management tool alongside the app.
+
+He's a keen reader, particularly fantasy fiction — Robin Hobb, Brandon Sanderson, and Andrzej Sapkowski are favourites. He's read the full Witcher saga, which ties into a broader interest in RPG-adjacent games like Skyrim and The Witcher 3. He also enjoys social board games — Blood on the Clocktower is a regular with friends.
+
+Outside of screens, he plays cricket for a local village team on Sundays — casual, social, and a good excuse to get outdoors. He's also a keen cook, with a particular interest in outdoor cooking and smoking meat in the summer months.
+
+On the hardware side, he still tinkers with IoT and home automation. He's currently working smart lighting and automations into a house renovation — the same curiosity that originally drew him from geology into software.
+
+## How He Learns
+
+Charles is a use-case-driven learner. He picks up new technologies when he can see a concrete application for them, rather than exploring for its own sake. For example, he adopted Meshy AI because it enabled a specific feature — turning 2D artwork into 3D-printable miniatures for D&D players — not because the technology was novel in isolation.
+
+His primary learning vehicle is dndplaybook.com. Running the entire product end-to-end — from marketing and copywriting through to DevOps, SSR, modern CSS, TypeScript, and integrations with email providers, 3D modelling services, and AI generation APIs — keeps him across a broad surface area of the current landscape.
+
+He subscribes to a wide range of RSS feeds and newsletters, following voices in the Laravel and open-source communities — Matt Pocock, Jess Archer, and Freek Van der Herten among them.
+
+He also uses Obsidian as a personal knowledge and productivity system, synced via Dropbox and augmented with AI-driven automations — including a workflow where documents dropped into an inbox folder are automatically analysed, tagged, and filed by Claude.
+
 ## Working Style
 
 Charles is initiative-driven — he proposes solutions proactively rather than waiting for detailed requirements. He's strongest when given a problem and the autonomy to figure out the path from zero to one.
 
 He's a big believer in iterative development: find a working solution, ship it, then improve from there. This applies equally to solo work and collaborative product development.
 
-A lot of his satisfaction comes from building products alongside other people — working cross-functionally with design, marketing, finance, and operations to solve real problems and seeing those products work for users. He's not just technically capable; he genuinely enjoys the human side of building software.
+A lot of his satisfaction comes from building products alongside other people — working cross-functionally with design, marketing, finance, and operations to solve real problems and seeing those products work for users.
+
+In a room, Charles tends to be the more outspoken and lighthearted presence — particularly in engineering settings where others may be quieter. He keeps things light without losing focus, which helps sustain energy through long spec sessions and technical discussions.
+
+He's empathetic and diplomatic in how he communicates. He's conscious that divisions within teams are easy to create and hard to repair, so he's deliberate about how he delivers feedback and navigates disagreement. That said, he will push back — especially on technical decisions. He sees it as a core part of his role to represent the technical perspective when it diverges from business or product priorities, without being stubborn about it.
+
+He builds relationships broadly, not just within his immediate team. He values in-person and voice communication over async text, believing that the most valuable information often surfaces in the margins of conversation rather than in the main agenda. Having strong cross-team relationships is something he sees as directly contributing to better delivery.
+
+If asked what he's most proud of: the billing platform he built at PodOS. Not just for the technical complexity — time zones, currencies, multi-product Stripe integration — but for the cross-functional collaboration it demanded, working closely with finance, tax, accounting, sales, and support teams to get it right.
+
+His career trajectory speaks for itself — self-taught after a geology degree, starting as a trainee and progressing to one of the most senior engineers in the organisation, with a large hand in building the platform as it exists today.
 
 ## Contact
 
@@ -139,3 +169,15 @@ A lot of his satisfaction comes from building products alongside other people �
 - **GitHub:** [github.com/cbowofrivia](https://github.com/cbowofrivia)
 - **Location:** Near Bristol, UK
 - **Work arrangement:** Open to remote, hybrid, or onsite — happy to discuss
+
+## What He's Looking For
+
+Charles thrives in startup and scale-up environments — that's where all of his experience lies and where he's done his best work. He values the flexibility, ownership, and pace that come with smaller, growing teams.
+
+He's drawn to roles where software solves physical-world problems. The intersection of digital and physical is what he finds most compelling about engineering — it's the thread that runs through his work on factory systems, print-on-demand fulfilment, and email at scale.
+
+What matters most: product impact, a strong team, and clearly defined goals. He believes most projects fail due to misaligned goals, and he's at his best when the objective is sharp and the team is motivated. He cares deeply about who he's working with day-to-day — good peers and good leadership both matter.
+
+He sees himself staying in the web, cloud, or platform space. He prefers working in his existing stack but has always been open to learning new technologies when the role calls for it.
+
+**Location:** Open to remote, hybrid, or onsite. Happy to commute into Bristol, Bath, or the surrounding area. London is viable if hybrid — a couple of days a week for the right role.
