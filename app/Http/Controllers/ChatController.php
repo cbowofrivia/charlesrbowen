@@ -6,6 +6,7 @@ use App\Ai\Agents\CvAgent;
 use App\Enums\MessageRole;
 use App\Models\Conversation;
 use App\Services\SystemPromptService;
+use Generator;
 use Illuminate\Http\Request;
 use Laravel\Ai\Streaming\Events\TextDelta;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -36,19 +37,14 @@ class ChatController extends Controller
 
         $stream = $agent->stream($validated['message']);
 
-        return response()->stream(function () use ($stream, $conversation) {
-            while (ob_get_level()) {
-                ob_end_flush();
-            }
-
+        return response()->stream(function () use ($stream, $conversation): Generator {
             $fullText = '';
 
             foreach ($stream as $event) {
                 if ($event instanceof TextDelta) {
                     $fullText .= $event->delta;
 
-                    echo $event->delta;
-                    flush();
+                    yield $event->delta;
                 }
             }
 
@@ -58,10 +54,6 @@ class ChatController extends Controller
                     'content' => $fullText,
                 ]);
             }
-        }, 200, [
-            'Content-Type' => 'text/plain; charset=UTF-8',
-            'Cache-Control' => 'no-cache',
-            'X-Accel-Buffering' => 'no',
-        ]);
+        });
     }
 }
