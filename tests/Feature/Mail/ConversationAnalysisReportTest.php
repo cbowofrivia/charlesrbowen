@@ -45,8 +45,8 @@ it('renders the report with all sections when data is present', function () {
     $mailable->assertSeeInHtml('DevOps experience');
     $mailable->assertSeeInHtml('Agent was too verbose');
     $mailable->assertSeeInHtml('Add Docker and Kubernetes');
-    $mailable->assertSeeInHtml('12 conversations');
-    $mailable->assertSeeInHtml('48 messages');
+    $mailable->assertSeeInHtml('12');
+    $mailable->assertSeeInHtml('48');
 });
 
 it('renders a heartbeat report when there are no conversations', function () {

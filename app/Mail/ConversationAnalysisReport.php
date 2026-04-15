@@ -32,7 +32,7 @@ class ConversationAnalysisReport extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.analysis-report',
+            markdown: 'mail.analysis-report',
         );
     }
 }
