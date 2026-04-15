@@ -9,8 +9,10 @@ use Illuminate\Bus\Batch;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Throwable;
 
 class AnalyzeConversationsJob implements ShouldQueue
 {
@@ -37,8 +39,20 @@ class AnalyzeConversationsJob implements ShouldQueue
             return;
         }
 
-        $cvContent = (string) file_get_contents(base_path('documents/cv.md'));
-        $promptContent = (string) file_get_contents(base_path('documents/prompt.md'));
+        $cvPath = base_path('documents/cv.md');
+        $promptPath = base_path('documents/prompt.md');
+
+        if (! file_exists($cvPath) || ! file_exists($promptPath)) {
+            Log::error('AnalyzeConversationsJob: required document files are missing.', [
+                'cv_exists' => file_exists($cvPath),
+                'prompt_exists' => file_exists($promptPath),
+            ]);
+
+            return;
+        }
+
+        $cvContent = (string) file_get_contents($cvPath);
+        $promptContent = (string) file_get_contents($promptPath);
 
         $batchKey = 'analysis:'.Str::uuid();
         $chunks = $conversations->chunk(1);
@@ -56,6 +70,7 @@ class AnalyzeConversationsJob implements ShouldQueue
 
         Bus::batch($jobs)
             ->name('Conversation Analysis')
+            ->allowFailures()
             ->then(function (Batch $batch) use ($batchKey, $batchCount, $recipient, $windowStart, $windowEnd) {
                 SendAnalysisReport::dispatch(
                     batchKey: $batchKey,
@@ -64,6 +79,14 @@ class AnalyzeConversationsJob implements ShouldQueue
                     windowStart: $windowStart,
                     windowEnd: $windowEnd,
                 );
+            })
+            ->catch(function (Batch $batch, Throwable $e) {
+                Log::warning('Conversation analysis batch had failures.', [
+                    'batch_id' => $batch->id,
+                    'failed_jobs' => $batch->failedJobs,
+                    'total_jobs' => $batch->totalJobs,
+                    'error' => $e->getMessage(),
+                ]);
             })
             ->dispatch();
     }

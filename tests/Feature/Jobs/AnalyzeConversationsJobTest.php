@@ -7,6 +7,7 @@ use App\Jobs\AnalyzeConversationsJob;
 use App\Mail\ConversationAnalysisReport;
 use App\Models\Conversation;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 beforeEach(function () {
@@ -71,6 +72,29 @@ it('creates one batch job per conversation', function () {
     Bus::assertBatched(function ($batch) {
         return $batch->jobs->count() === 2;
     });
+});
+
+it('logs an error and stops when document files are missing', function () {
+    Log::spy();
+
+    $cvPath = base_path('documents/cv.md');
+    rename($cvPath, $cvPath.'.bak');
+
+    try {
+        Conversation::factory()->create([
+            'created_at' => now()->subDays(5),
+        ]);
+
+        (new AnalyzeConversationsJob(
+            windowDays: 30,
+            recipient: 'test@example.com',
+        ))->handle();
+
+        Log::shouldHaveReceived('error')->withArgs(fn ($msg) => str_contains($msg, 'document files are missing'));
+        Mail::assertNothingSent();
+    } finally {
+        rename($cvPath.'.bak', $cvPath);
+    }
 });
 
 it('only includes conversations within the configured window', function () {

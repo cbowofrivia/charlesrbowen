@@ -5,6 +5,7 @@ use App\Jobs\SendAnalysisReport;
 use App\Mail\ConversationAnalysisReport;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 beforeEach(function () {
@@ -72,4 +73,49 @@ it('uses the synthesis agent to consolidate multiple batches', function () {
     // Synthesis agent should be invoked with both batch results
     ReportSynthesisAgent::assertPrompted(fn ($prompt) => str_contains($prompt->agent->instructions(), 'DevOps'));
     Mail::assertSent(ConversationAnalysisReport::class);
+});
+
+it('skips sending when all cache entries are missing', function () {
+    Log::spy();
+
+    $windowStart = CarbonImmutable::parse('2026-03-16');
+    $windowEnd = CarbonImmutable::parse('2026-04-15');
+
+    (new SendAnalysisReport(
+        batchKey: 'nonexistent-batch',
+        batchCount: 3,
+        recipient: 'test@example.com',
+        windowStart: $windowStart,
+        windowEnd: $windowEnd,
+    ))->handle();
+
+    Mail::assertNothingSent();
+    Log::shouldHaveReceived('warning')->withArgs(fn ($msg) => str_contains($msg, 'no cached batch results'));
+});
+
+it('proceeds with partial results when some cache entries are missing', function () {
+    Cache::put('test-batch:0', [
+        'gap_analysis' => [],
+        'prompt_effectiveness' => [],
+        'cv_suggestions' => [],
+        'summary' => ['conversation_count' => 2, 'message_count' => 4, 'common_topics' => [], 'notable_interactions' => '', 'is_heartbeat' => false],
+    ], now()->addHour());
+
+    // test-batch:1 is deliberately missing
+
+    Log::spy();
+
+    $windowStart = CarbonImmutable::parse('2026-03-16');
+    $windowEnd = CarbonImmutable::parse('2026-04-15');
+
+    (new SendAnalysisReport(
+        batchKey: 'test-batch',
+        batchCount: 2,
+        recipient: 'test@example.com',
+        windowStart: $windowStart,
+        windowEnd: $windowEnd,
+    ))->handle();
+
+    Mail::assertSent(ConversationAnalysisReport::class);
+    Log::shouldHaveReceived('warning')->withArgs(fn ($msg) => str_contains($msg, 'some batch results missing'));
 });

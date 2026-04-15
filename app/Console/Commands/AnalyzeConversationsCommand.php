@@ -13,15 +13,6 @@ class AnalyzeConversationsCommand extends Command
 
     public function handle(): int
     {
-        $cvPath = base_path('documents/cv.md');
-        $promptPath = base_path('documents/prompt.md');
-
-        if (! file_exists($cvPath) || ! file_exists($promptPath)) {
-            $this->error('Required document files (documents/cv.md, documents/prompt.md) are missing.');
-
-            return self::FAILURE;
-        }
-
         AnalyzeConversationsJob::dispatch(
             windowDays: (int) config('analysis.window_days', 30),
             recipient: (string) config('analysis.recipient'),

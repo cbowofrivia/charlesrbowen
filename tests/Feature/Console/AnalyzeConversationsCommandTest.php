@@ -16,18 +16,3 @@ it('dispatches the analysis job', function () {
             && $job->recipient === config('analysis.recipient');
     });
 });
-
-it('fails when document files are missing', function () {
-    $cvPath = base_path('documents/cv.md');
-
-    rename($cvPath, $cvPath.'.bak');
-
-    try {
-        $this->artisan('conversations:analyze')
-            ->assertFailed();
-
-        Queue::assertNothingPushed();
-    } finally {
-        rename($cvPath.'.bak', $cvPath);
-    }
-});

@@ -16,6 +16,10 @@ class AnalyzeConversationBatch implements ShouldQueue
 
     public int $timeout = 120;
 
+    public int $tries = 3;
+
+    public int $backoff = 30;
+
     /**
      * @param  Collection<int, Conversation>  $conversations
      */
@@ -41,6 +45,6 @@ class AnalyzeConversationBatch implements ShouldQueue
 
         $result = $agent->prompt('Analyze the conversations provided in your instructions.')->toArray();
 
-        Cache::put("{$this->batchKey}:{$this->batchIndex}", $result, now()->addHour());
+        Cache::put("{$this->batchKey}:{$this->batchIndex}", $result, now()->addDay());
     }
 }
