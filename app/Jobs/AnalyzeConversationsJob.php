@@ -41,7 +41,7 @@ class AnalyzeConversationsJob implements ShouldQueue
         $promptContent = (string) file_get_contents(base_path('documents/prompt.md'));
 
         $batchKey = 'analysis:'.Str::uuid();
-        $chunks = $conversations->chunk(5);
+        $chunks = $conversations->chunk(2);
 
         $jobs = $chunks->map(fn ($chunk, $index) => new AnalyzeConversationBatch(
             batchKey: $batchKey,
