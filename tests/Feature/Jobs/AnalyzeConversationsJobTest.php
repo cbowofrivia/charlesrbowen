@@ -49,11 +49,11 @@ it('dispatches a batch of analysis jobs for conversations', function () {
     });
 });
 
-it('chunks conversations into batches of 2', function () {
+it('creates one batch job per conversation', function () {
     Bus::fake();
 
-    // Create 4 conversations — should result in 2 batch jobs
-    for ($i = 0; $i < 4; $i++) {
+    // Create 2 conversations — should result in 2 batch jobs
+    for ($i = 0; $i < 2; $i++) {
         $conversation = Conversation::factory()->create([
             'created_at' => now()->subDays(5),
         ]);

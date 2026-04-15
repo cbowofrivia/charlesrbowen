@@ -14,6 +14,8 @@ class SendAnalysisReport implements ShouldQueue
 {
     use Queueable;
 
+    public int $timeout = 120;
+
     public function __construct(
         public string $batchKey,
         public int $batchCount,

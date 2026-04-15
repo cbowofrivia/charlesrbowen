@@ -5,11 +5,13 @@ namespace App\Ai\Agents;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Ai\Attributes\MaxTokens;
 use Laravel\Ai\Attributes\Temperature;
+use Laravel\Ai\Attributes\UseCheapestModel;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\HasStructuredOutput;
 use Laravel\Ai\Promptable;
 use Stringable;
 
+#[UseCheapestModel]
 #[Temperature(0.3)]
 #[MaxTokens(4096)]
 class ReportSynthesisAgent implements Agent, HasStructuredOutput
