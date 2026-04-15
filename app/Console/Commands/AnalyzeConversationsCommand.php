@@ -7,6 +7,7 @@ use App\Mail\ConversationAnalysisReport;
 use App\Models\Conversation;
 use Carbon\CarbonImmutable;
 use Illuminate\Console\Command;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Mail;
 
 class AnalyzeConversationsCommand extends Command
@@ -49,7 +50,13 @@ class AnalyzeConversationsCommand extends Command
 
         $this->info("Found {$conversations->count()} conversations. Running analysis...");
 
-        $response = $agent->prompt('Analyze the conversations provided in your instructions.');
+        try {
+            $response = retry(2, fn () => $agent->prompt('Analyze the conversations provided in your instructions.'), 5000, fn ($e) => $e instanceof ConnectionException);
+        } catch (ConnectionException $e) {
+            $this->error("Failed to connect to AI provider after retries: {$e->getMessage()}");
+
+            return self::FAILURE;
+        }
 
         /** @var array{gap_analysis: array<int, array{topic: string, description: string, evidence: string, severity: string}>, prompt_effectiveness: array<int, array{observation: string, example: string, suggestion: string}>, cv_suggestions: array<int, array{section: string, recommendation: string, rationale: string}>, summary: array{conversation_count: int, message_count: int, common_topics: array<int, string>, notable_interactions: string, is_heartbeat: bool}} $report */
         $report = $response->toArray();
