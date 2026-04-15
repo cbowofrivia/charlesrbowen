@@ -14,6 +14,8 @@ class AnalyzeConversationBatch implements ShouldQueue
 {
     use Batchable, Queueable;
 
+    public int $timeout = 120;
+
     /**
      * @param  Collection<int, Conversation>  $conversations
      */
