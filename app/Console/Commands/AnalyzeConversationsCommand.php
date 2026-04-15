@@ -2,13 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Ai\Agents\ConversationAnalysisAgent;
-use App\Mail\ConversationAnalysisReport;
-use App\Models\Conversation;
-use Carbon\CarbonImmutable;
+use App\Jobs\AnalyzeConversationsJob;
 use Illuminate\Console\Command;
-use Illuminate\Http\Client\ConnectionException;
-use Illuminate\Support\Facades\Mail;
 
 class AnalyzeConversationsCommand extends Command
 {
@@ -18,18 +13,6 @@ class AnalyzeConversationsCommand extends Command
 
     public function handle(): int
     {
-        $windowDays = config('analysis.window_days', 30);
-        $recipient = config('analysis.recipient');
-        $windowStart = CarbonImmutable::now()->subDays($windowDays)->startOfDay();
-        $windowEnd = CarbonImmutable::now();
-
-        $this->info("Analyzing conversations from the last {$windowDays} days...");
-
-        $conversations = Conversation::with('messages')
-            ->where('created_at', '>=', $windowStart)
-            ->oldest()
-            ->get();
-
         $cvPath = base_path('documents/cv.md');
         $promptPath = base_path('documents/prompt.md');
 
@@ -39,34 +22,12 @@ class AnalyzeConversationsCommand extends Command
             return self::FAILURE;
         }
 
-        $cvContent = (string) file_get_contents($cvPath);
-        $promptContent = (string) file_get_contents($promptPath);
-
-        $agent = new ConversationAnalysisAgent(
-            conversations: $conversations,
-            cvContent: $cvContent,
-            promptContent: $promptContent,
+        AnalyzeConversationsJob::dispatch(
+            windowDays: (int) config('analysis.window_days', 30),
+            recipient: (string) config('analysis.recipient'),
         );
 
-        ini_set('default_socket_timeout', '300');
-
-        $this->info("Found {$conversations->count()} conversations. Running analysis...");
-
-        try {
-            $response = retry(2, fn () => $agent->prompt('Analyze the conversations provided in your instructions.'), 5000, fn ($e) => $e instanceof ConnectionException);
-        } catch (ConnectionException $e) {
-            $this->error("Failed to connect to AI provider after retries: {$e->getMessage()}");
-
-            return self::FAILURE;
-        }
-
-        /** @var array{gap_analysis: array<int, array{topic: string, description: string, evidence: string, severity: string}>, prompt_effectiveness: array<int, array{observation: string, example: string, suggestion: string}>, cv_suggestions: array<int, array{section: string, recommendation: string, rationale: string}>, summary: array{conversation_count: int, message_count: int, common_topics: array<int, string>, notable_interactions: string, is_heartbeat: bool}} $report */
-        $report = $response->toArray();
-
-        Mail::to($recipient)
-            ->send(new ConversationAnalysisReport($report, $windowStart, $windowEnd));
-
-        $this->info("Report sent to {$recipient}.");
+        $this->info('Conversation analysis job dispatched.');
 
         return self::SUCCESS;
     }

@@ -6,7 +6,6 @@ use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\Support\Collection;
 use Laravel\Ai\Attributes\MaxTokens;
 use Laravel\Ai\Attributes\Temperature;
-use Laravel\Ai\Attributes\Timeout;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\HasStructuredOutput;
 use Laravel\Ai\Promptable;
@@ -14,7 +13,6 @@ use Stringable;
 
 #[Temperature(0.3)]
 #[MaxTokens(4096)]
-#[Timeout(300)]
 class ConversationAnalysisAgent implements Agent, HasStructuredOutput
 {
     use Promptable;
