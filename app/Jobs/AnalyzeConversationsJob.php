@@ -2,19 +2,19 @@
 
 namespace App\Jobs;
 
-use App\Ai\Agents\ConversationAnalysisAgent;
 use App\Mail\ConversationAnalysisReport;
 use App\Models\Conversation;
 use Carbon\CarbonImmutable;
+use Illuminate\Bus\Batch;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class AnalyzeConversationsJob implements ShouldQueue
 {
     use Queueable;
-
-    public int $timeout = 600;
 
     public function __construct(
         public int $windowDays,
@@ -40,29 +40,33 @@ class AnalyzeConversationsJob implements ShouldQueue
         $cvContent = (string) file_get_contents(base_path('documents/cv.md'));
         $promptContent = (string) file_get_contents(base_path('documents/prompt.md'));
 
-        $batchResults = [];
+        $batchKey = 'analysis:'.Str::uuid();
+        $chunks = $conversations->chunk(5);
 
-        foreach ($conversations->chunk(5) as $batch) {
-            $agent = new ConversationAnalysisAgent(
-                conversations: $batch,
-                cvContent: $cvContent,
-                promptContent: $promptContent,
-            );
+        $jobs = $chunks->map(fn ($chunk, $index) => new AnalyzeConversationBatch(
+            batchKey: $batchKey,
+            batchIndex: $index,
+            conversations: $chunk,
+            cvContent: $cvContent,
+            promptContent: $promptContent,
+        ))->all();
 
-            $batchResults[] = $agent->prompt('Analyze the conversations provided in your instructions.')->toArray();
-        }
+        $recipient = $this->recipient;
 
-        $report = count($batchResults) === 1
-            ? $batchResults[0]
-            : $this->mergeResults($batchResults);
-
-        Mail::to($this->recipient)
-            ->send(new ConversationAnalysisReport($report, $windowStart, $windowEnd));
+        Bus::batch($jobs)
+            ->name('Conversation Analysis')
+            ->then(function (Batch $batch) use ($batchKey, $chunks, $recipient, $windowStart, $windowEnd) {
+                SendAnalysisReport::dispatch(
+                    batchKey: $batchKey,
+                    batchCount: $chunks->count(),
+                    recipient: $recipient,
+                    windowStart: $windowStart,
+                    windowEnd: $windowEnd,
+                );
+            })
+            ->dispatch();
     }
 
-    /**
-     * Send a heartbeat report when there are no conversations.
-     */
     private function sendHeartbeat(CarbonImmutable $windowStart, CarbonImmutable $windowEnd): void
     {
         $report = [
@@ -80,47 +84,5 @@ class AnalyzeConversationsJob implements ShouldQueue
 
         Mail::to($this->recipient)
             ->send(new ConversationAnalysisReport($report, $windowStart, $windowEnd));
-    }
-
-    /**
-     * Merge multiple batch results into a single report.
-     *
-     * @param  array<int, array{gap_analysis: array<int, mixed>, prompt_effectiveness: array<int, mixed>, cv_suggestions: array<int, mixed>, summary: array{conversation_count: int, message_count: int, common_topics: array<int, string>, notable_interactions: string, is_heartbeat: bool}}>  $batchResults
-     * @return array{gap_analysis: array<int, mixed>, prompt_effectiveness: array<int, mixed>, cv_suggestions: array<int, mixed>, summary: array{conversation_count: int, message_count: int, common_topics: array<int, string>, notable_interactions: string, is_heartbeat: bool}}
-     */
-    private function mergeResults(array $batchResults): array
-    {
-        $merged = [
-            'gap_analysis' => [],
-            'prompt_effectiveness' => [],
-            'cv_suggestions' => [],
-            'summary' => [
-                'conversation_count' => 0,
-                'message_count' => 0,
-                'common_topics' => [],
-                'notable_interactions' => '',
-                'is_heartbeat' => false,
-            ],
-        ];
-
-        foreach ($batchResults as $result) {
-            $merged['gap_analysis'] = array_merge($merged['gap_analysis'], $result['gap_analysis']);
-            $merged['prompt_effectiveness'] = array_merge($merged['prompt_effectiveness'], $result['prompt_effectiveness']);
-            $merged['cv_suggestions'] = array_merge($merged['cv_suggestions'], $result['cv_suggestions']);
-            $merged['summary']['conversation_count'] += $result['summary']['conversation_count'];
-            $merged['summary']['message_count'] += $result['summary']['message_count'];
-            $merged['summary']['common_topics'] = array_unique(array_merge(
-                $merged['summary']['common_topics'],
-                $result['summary']['common_topics'],
-            ));
-
-            if ($result['summary']['notable_interactions']) {
-                $merged['summary']['notable_interactions'] .= ($merged['summary']['notable_interactions'] ? ' ' : '').$result['summary']['notable_interactions'];
-            }
-        }
-
-        $merged['summary']['common_topics'] = array_values($merged['summary']['common_topics']);
-
-        return $merged;
     }
 }
