@@ -28,8 +28,17 @@ class AnalyzeConversationsCommand extends Command
             ->where('created_at', '>=', $windowStart)
             ->get();
 
-        $cvContent = file_get_contents(base_path('documents/cv.md')) ?: '';
-        $promptContent = file_get_contents(base_path('documents/prompt.md')) ?: '';
+        $cvPath = base_path('documents/cv.md');
+        $promptPath = base_path('documents/prompt.md');
+
+        if (! file_exists($cvPath) || ! file_exists($promptPath)) {
+            $this->error('Required document files (documents/cv.md, documents/prompt.md) are missing.');
+
+            return self::FAILURE;
+        }
+
+        $cvContent = file_get_contents($cvPath);
+        $promptContent = file_get_contents($promptPath);
 
         $agent = new ConversationAnalysisAgent(
             conversations: $conversations,

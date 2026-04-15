@@ -67,6 +67,22 @@ it('only includes conversations within the configured window', function () {
     });
 });
 
+it('fails when document files are missing', function () {
+    $cvPath = base_path('documents/cv.md');
+    $promptPath = base_path('documents/prompt.md');
+
+    rename($cvPath, $cvPath.'.bak');
+
+    try {
+        $this->artisan('conversations:analyze')
+            ->assertFailed();
+
+        Mail::assertNothingSent();
+    } finally {
+        rename($cvPath.'.bak', $cvPath);
+    }
+});
+
 it('prompts the agent with cv and prompt content', function () {
     $this->artisan('conversations:analyze')
         ->assertSuccessful();
