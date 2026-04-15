@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <style>
@@ -14,10 +14,6 @@
         .item { background: #f9fafb; border-radius: 8px; padding: 16px; margin-bottom: 12px; }
         .item-title { font-weight: 600; margin-bottom: 4px; }
         .evidence, .example { font-style: italic; color: #6b7280; margin-top: 6px; font-size: 14px; }
-        .stats { display: flex; gap: 24px; margin-bottom: 16px; }
-        .stat { text-align: center; }
-        .stat-value { font-size: 28px; font-weight: 700; color: #111827; }
-        .stat-label { font-size: 13px; color: #6b7280; }
         .topics { margin-top: 8px; }
         .topic-tag { display: inline-block; background: #e5e7eb; padding: 2px 10px; border-radius: 12px; font-size: 13px; margin: 2px 4px 2px 0; }
         .heartbeat { text-align: center; padding: 40px 20px; color: #6b7280; }
