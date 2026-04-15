@@ -1,5 +1,6 @@
 <?php
 
+use App\Ai\Agents\ReportSynthesisAgent;
 use App\Jobs\SendAnalysisReport;
 use App\Mail\ConversationAnalysisReport;
 use Carbon\CarbonImmutable;
@@ -7,10 +8,11 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 
 beforeEach(function () {
+    ReportSynthesisAgent::fake();
     Mail::fake();
 });
 
-it('sends the analysis report email from cached batch results', function () {
+it('sends the report directly when there is only one batch', function () {
     Cache::put('test-batch:0', [
         'gap_analysis' => [['topic' => 'DevOps', 'description' => 'Asked about Docker', 'evidence' => 'Quote', 'severity' => 'high']],
         'prompt_effectiveness' => [],
@@ -34,23 +36,26 @@ it('sends the analysis report email from cached batch results', function () {
             && $mail->report['summary']['conversation_count'] === 3;
     });
 
+    // Should not invoke synthesis agent for a single batch
+    ReportSynthesisAgent::assertNeverPrompted();
+
     // Cache should be cleaned up
     expect(Cache::get('test-batch:0'))->toBeNull();
 });
 
-it('merges multiple batch results', function () {
+it('uses the synthesis agent to consolidate multiple batches', function () {
     Cache::put('test-batch:0', [
         'gap_analysis' => [['topic' => 'DevOps', 'description' => 'D1', 'evidence' => 'E1', 'severity' => 'high']],
         'prompt_effectiveness' => [],
         'cv_suggestions' => [],
-        'summary' => ['conversation_count' => 3, 'message_count' => 6, 'common_topics' => ['DevOps'], 'notable_interactions' => 'Batch 1 notable.', 'is_heartbeat' => false],
+        'summary' => ['conversation_count' => 3, 'message_count' => 6, 'common_topics' => ['DevOps'], 'notable_interactions' => 'Batch 1.', 'is_heartbeat' => false],
     ], now()->addHour());
 
     Cache::put('test-batch:1', [
-        'gap_analysis' => [['topic' => 'CI/CD', 'description' => 'D2', 'evidence' => 'E2', 'severity' => 'medium']],
-        'prompt_effectiveness' => [['observation' => 'Too verbose', 'example' => 'Ex', 'suggestion' => 'Fix']],
+        'gap_analysis' => [['topic' => 'DevOps', 'description' => 'D2', 'evidence' => 'E2', 'severity' => 'high']],
+        'prompt_effectiveness' => [],
         'cv_suggestions' => [],
-        'summary' => ['conversation_count' => 2, 'message_count' => 4, 'common_topics' => ['CI/CD', 'DevOps'], 'notable_interactions' => 'Batch 2 notable.', 'is_heartbeat' => false],
+        'summary' => ['conversation_count' => 2, 'message_count' => 4, 'common_topics' => ['DevOps'], 'notable_interactions' => 'Batch 2.', 'is_heartbeat' => false],
     ], now()->addHour());
 
     $windowStart = CarbonImmutable::parse('2026-03-16');
@@ -64,15 +69,7 @@ it('merges multiple batch results', function () {
         windowEnd: $windowEnd,
     ))->handle();
 
-    Mail::assertSent(ConversationAnalysisReport::class, function ($mail) {
-        $report = $mail->report;
-
-        return count($report['gap_analysis']) === 2
-            && count($report['prompt_effectiveness']) === 1
-            && $report['summary']['conversation_count'] === 5
-            && $report['summary']['message_count'] === 10
-            && count($report['summary']['common_topics']) === 2
-            && str_contains($report['summary']['notable_interactions'], 'Batch 1')
-            && str_contains($report['summary']['notable_interactions'], 'Batch 2');
-    });
+    // Synthesis agent should be invoked with both batch results
+    ReportSynthesisAgent::assertPrompted(fn ($prompt) => str_contains($prompt->agent->instructions(), 'DevOps'));
+    Mail::assertSent(ConversationAnalysisReport::class);
 });
