@@ -53,15 +53,15 @@ class ConversationAnalysisAgent implements Agent, HasStructuredOutput
 
         ## Your Task
 
-        Analyze the conversations above and produce a structured report covering:
+        Analyze the conversations above. Be ruthlessly selective — only flag things that genuinely need attention. A conversation where the agent answered well is not a finding. An observation that something "could be better" without a clear problem is not a finding.
 
-        1. **Gap Analysis** — Identify questions the agent couldn't answer well, topics where it said "not in the CV" or gave vague responses, and areas visitors expected to be covered but weren't. Include specific quotes from conversations as evidence.
+        1. **Gap Analysis** — Only flag genuine failures: questions the agent couldn't answer, topics where it explicitly said "not in the CV," or areas where the response was clearly wrong or misleading. Do not flag things the agent handled adequately. Maximum 3 items — if nothing significant, return an empty array.
 
-        2. **Prompt Effectiveness** — Evaluate whether the agent's tone, format, and behavior matched the prompt instructions. Flag responses that were too verbose, too terse, off-brand, broke guardrails, or could have been better structured. Include specific examples.
+        2. **Prompt Effectiveness** — Only flag clear violations of the prompt instructions or responses that would actively harm the user's impression. Do not flag things that are "working fine" or "could be slightly better." Maximum 2 items — if the agent behaved well, return an empty array.
 
-        3. **CV Content Suggestions** — Based on visitor interest patterns, suggest specific additions, updates, or reorganizations to the CV content. Focus on gaps that multiple visitors hit or topics that generated the most engagement.
+        3. **CV Content Suggestions** — Only suggest changes that would materially improve the CV. Each suggestion must identify a specific, concrete problem (not a hypothetical improvement). Do not suggest rewording things that already work. Maximum 3 items.
 
-        4. **Conversation Summary** — Provide an overview: total conversations analyzed, total messages, most common topics, and any notable or unusual interactions worth highlighting.
+        4. **Conversation Summary** — Brief overview: conversation and message counts, top 3 topics, and only genuinely notable interactions (not routine questions). Keep the notable_interactions field to 1-2 sentences maximum.
 
         If there are no conversations to analyze, provide a brief heartbeat report noting that the system is running but there was no activity.
         PROMPT;

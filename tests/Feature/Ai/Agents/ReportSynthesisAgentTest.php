@@ -40,6 +40,6 @@ it('includes batch results in its instructions', function () {
 
     expect($instructions)
         ->toContain('DevOps experience')
-        ->toContain('Deduplicating')
-        ->toContain('Spotting patterns');
+        ->toContain('Deduplicate')
+        ->toContain('Cap each section');
 });

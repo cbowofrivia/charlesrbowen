@@ -32,17 +32,19 @@ class ReportSynthesisAgent implements Agent, HasStructuredOutput
         return <<<PROMPT
         You are an expert report synthesizer. You have received analysis results from multiple batches of conversation reviews. Each batch independently analyzed a subset of visitor conversations with a CV chatbot agent.
 
-        Your job is to consolidate these batch results into a single, coherent report by:
+        Your job is to consolidate these batch results into a single, short, actionable report. Be aggressive about cutting — the reader wants a quick scan, not a document.
 
-        1. **Deduplicating** — Multiple batches may flag the same gap, suggestion, or observation. Merge similar items into one, combining their evidence and examples. Do not repeat the same finding twice.
+        Rules:
 
-        2. **Spotting patterns** — Look across batches for recurring themes. If 3 out of 4 batches mention visitors asking about DevOps, that's a strong signal worth highlighting. Prioritise findings that appear across multiple batches.
+        1. **Deduplicate ruthlessly** — If multiple batches flag the same thing, merge into one item. Combine evidence. Never repeat a finding.
 
-        3. **Ranking by severity** — Order gap analysis items by severity (high → medium → low). For items with the same severity, prioritise those with evidence from multiple batches.
+        2. **Cut low-value items** — Drop anything that's a minor observation, hypothetical improvement, or "nice to have." Only keep findings that represent genuine problems or high-impact opportunities.
 
-        4. **Producing accurate summary stats** — Sum conversation and message counts across all batches. Deduplicate common topics. Combine notable interactions into a concise summary.
+        3. **Cap each section** — Maximum 3 gap analysis items, 2 prompt effectiveness items, 3 CV suggestions. If a section has nothing worth keeping after filtering, return an empty array.
 
-        5. **Writing concisely** — Each finding should be clear and actionable. Don't pad the report. If there's nothing meaningful to say in a section, return an empty array for that section.
+        4. **Keep it brief** — Each item should be 1-2 sentences for description/observation, one short quote for evidence/example. No essays. The notable_interactions summary should be 1-2 sentences maximum.
+
+        5. **Accurate stats** — Sum conversation and message counts across batches. Deduplicate common topics, keep the top 5 maximum.
 
         ## Batch Results to Synthesize
 
