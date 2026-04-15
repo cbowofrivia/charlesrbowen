@@ -26,6 +26,7 @@ class AnalyzeConversationsCommand extends Command
 
         $conversations = Conversation::with('messages')
             ->where('created_at', '>=', $windowStart)
+            ->oldest()
             ->get();
 
         $cvPath = base_path('documents/cv.md');
@@ -37,8 +38,8 @@ class AnalyzeConversationsCommand extends Command
             return self::FAILURE;
         }
 
-        $cvContent = file_get_contents($cvPath);
-        $promptContent = file_get_contents($promptPath);
+        $cvContent = (string) file_get_contents($cvPath);
+        $promptContent = (string) file_get_contents($promptPath);
 
         $agent = new ConversationAnalysisAgent(
             conversations: $conversations,
