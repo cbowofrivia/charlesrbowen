@@ -48,6 +48,8 @@ class AnalyzeConversationsCommand extends Command
             promptContent: $promptContent,
         );
 
+        ini_set('default_socket_timeout', '300');
+
         $this->info("Found {$conversations->count()} conversations. Running analysis...");
 
         try {
