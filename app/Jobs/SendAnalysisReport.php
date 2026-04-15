@@ -26,10 +26,13 @@ class SendAnalysisReport implements ShouldQueue
 
     public function handle(): void
     {
+        $cacheKeys = [];
         $batchResults = [];
 
         for ($i = 0; $i < $this->batchCount; $i++) {
-            $batchResults[] = Cache::pull("{$this->batchKey}:{$i}");
+            $key = "{$this->batchKey}:{$i}";
+            $cacheKeys[] = $key;
+            $batchResults[] = Cache::get($key);
         }
 
         if ($this->batchCount === 1) {
@@ -41,5 +44,9 @@ class SendAnalysisReport implements ShouldQueue
 
         Mail::to($this->recipient)
             ->send(new ConversationAnalysisReport($report, $this->windowStart, $this->windowEnd));
+
+        foreach ($cacheKeys as $key) {
+            Cache::forget($key);
+        }
     }
 }
