@@ -52,13 +52,14 @@ class AnalyzeConversationsJob implements ShouldQueue
         ))->all();
 
         $recipient = $this->recipient;
+        $batchCount = $chunks->count();
 
         Bus::batch($jobs)
             ->name('Conversation Analysis')
-            ->then(function (Batch $batch) use ($batchKey, $chunks, $recipient, $windowStart, $windowEnd) {
+            ->then(function (Batch $batch) use ($batchKey, $batchCount, $recipient, $windowStart, $windowEnd) {
                 SendAnalysisReport::dispatch(
                     batchKey: $batchKey,
-                    batchCount: $chunks->count(),
+                    batchCount: $batchCount,
                     recipient: $recipient,
                     windowStart: $windowStart,
                     windowEnd: $windowEnd,
