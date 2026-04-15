@@ -24,7 +24,7 @@
     <h1>CV Agent Analysis Report</h1>
     <p class="meta">{{ $windowStart->format('j M Y') }} &mdash; {{ $windowEnd->format('j M Y') }}</p>
 
-    @if($report['summary']['is_heartbeat'])
+    @if($report['summary']['is_heartbeat'] ?? false)
         <div class="heartbeat">
             <p><strong>No conversations in this period.</strong> The system is running normally.</p>
         </div>
@@ -33,15 +33,15 @@
         <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 16px;">
             <tr>
                 <td style="text-align: center; padding: 12px;">
-                    <div style="font-size: 28px; font-weight: 700; color: #111827;">{{ $report['summary']['conversation_count'] }} conversations</div>
+                    <div style="font-size: 28px; font-weight: 700; color: #111827;">{{ $report['summary']['conversation_count'] ?? 0 }} conversations</div>
                 </td>
                 <td style="text-align: center; padding: 12px;">
-                    <div style="font-size: 28px; font-weight: 700; color: #111827;">{{ $report['summary']['message_count'] }} messages</div>
+                    <div style="font-size: 28px; font-weight: 700; color: #111827;">{{ $report['summary']['message_count'] ?? 0 }} messages</div>
                 </td>
             </tr>
         </table>
 
-        @if(count($report['summary']['common_topics']) > 0)
+        @if(count($report['summary']['common_topics'] ?? []) > 0)
             <div class="topics">
                 <strong>Common topics:</strong>
                 @foreach($report['summary']['common_topics'] as $topic)
@@ -50,11 +50,11 @@
             </div>
         @endif
 
-        @if($report['summary']['notable_interactions'])
+        @if($report['summary']['notable_interactions'] ?? '')
             <p><strong>Notable:</strong> {{ $report['summary']['notable_interactions'] }}</p>
         @endif
 
-        @if(count($report['gap_analysis']) > 0)
+        @if(count($report['gap_analysis'] ?? []) > 0)
             <h2>Gap Analysis</h2>
             @foreach($report['gap_analysis'] as $gap)
                 <div class="item">
@@ -68,7 +68,7 @@
             @endforeach
         @endif
 
-        @if(count($report['prompt_effectiveness']) > 0)
+        @if(count($report['prompt_effectiveness'] ?? []) > 0)
             <h2>Prompt Effectiveness</h2>
             @foreach($report['prompt_effectiveness'] as $item)
                 <div class="item">
@@ -79,7 +79,7 @@
             @endforeach
         @endif
 
-        @if(count($report['cv_suggestions']) > 0)
+        @if(count($report['cv_suggestions'] ?? []) > 0)
             <h2>CV Content Suggestions</h2>
             @foreach($report['cv_suggestions'] as $suggestion)
                 <div class="item">
