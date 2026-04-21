@@ -11,3 +11,13 @@ it('registers the conversations:analyze command on the configured schedule', fun
 
     expect($events)->not->toBeEmpty();
 });
+
+it('uses the cron expression from config', function () {
+    $schedule = app(Schedule::class);
+
+    $event = collect($schedule->events())->first(function ($event) {
+        return str_contains($event->command, 'conversations:analyze');
+    });
+
+    expect($event->expression)->toBe(config('analysis.schedule'));
+});

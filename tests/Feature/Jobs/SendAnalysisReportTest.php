@@ -93,6 +93,33 @@ it('skips sending when all cache entries are missing', function () {
     Log::shouldHaveReceived('warning')->withArgs(fn ($msg) => str_contains($msg, 'no cached batch results'));
 });
 
+it('clears all cache entries after synthesizing multiple batches', function () {
+    Cache::put('test-batch:0', [
+        'gap_analysis' => [],
+        'prompt_effectiveness' => [],
+        'cv_suggestions' => [],
+        'summary' => ['conversation_count' => 1, 'message_count' => 2, 'common_topics' => [], 'notable_interactions' => '', 'is_heartbeat' => false],
+    ], now()->addHour());
+
+    Cache::put('test-batch:1', [
+        'gap_analysis' => [],
+        'prompt_effectiveness' => [],
+        'cv_suggestions' => [],
+        'summary' => ['conversation_count' => 1, 'message_count' => 2, 'common_topics' => [], 'notable_interactions' => '', 'is_heartbeat' => false],
+    ], now()->addHour());
+
+    (new SendAnalysisReport(
+        batchKey: 'test-batch',
+        batchCount: 2,
+        recipient: 'test@example.com',
+        windowStart: CarbonImmutable::parse('2026-03-16'),
+        windowEnd: CarbonImmutable::parse('2026-04-15'),
+    ))->handle();
+
+    expect(Cache::get('test-batch:0'))->toBeNull();
+    expect(Cache::get('test-batch:1'))->toBeNull();
+});
+
 it('proceeds with partial results when some cache entries are missing', function () {
     Cache::put('test-batch:0', [
         'gap_analysis' => [],
